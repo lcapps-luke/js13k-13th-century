@@ -3,6 +3,8 @@ package;
 import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import map.MapState;
+import resource.Images;
 
 class Main {
 	@:native("e")
@@ -23,6 +25,9 @@ class Main {
 		Browser.window.document.body.onresize = onResize;
 		onResize();
 
+		Images.load(() -> {
+			setState(new MapState());
+		});
 		// TODO init
 
 		Browser.window.requestAnimationFrame(update);
@@ -46,5 +51,10 @@ class Main {
 
 		lastFrame = s;
 		Browser.window.requestAnimationFrame(update);
+	}
+
+	@:native("s")
+	public static function setState(s:State) {
+		state = s;
 	}
 }
