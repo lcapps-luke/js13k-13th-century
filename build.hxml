@@ -9,3 +9,9 @@
 -main PackMain
 -neko build/PackTool.n
 -cmd neko build/PackTool.n
+
+--next
+
+-cp tools/editor
+-main EditorMain
+-js build/Editor.js

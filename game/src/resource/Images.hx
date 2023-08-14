@@ -1,6 +1,5 @@
 package resource;
 
-import haxe.Resource;
 import js.Browser;
 import js.html.svg.ImageElement;
 
