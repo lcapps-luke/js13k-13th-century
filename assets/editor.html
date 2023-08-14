@@ -19,6 +19,9 @@
 				vertical-align: top;
 				position: fixed;
 			}
+			.hide{
+				display: none;
+			}
 		</style>
 		<title>13th Century - Editor</title>
 	</head>
@@ -39,6 +42,16 @@
 						<option value="move-location">Move Location</option>
 					</select>
 				</label>
+			</div>
+			<div id="div-location" class="hide">
+				<div>
+					<label>Name: <input type="text" id="txt-name"/></label>
+				</div>
+			</div>
+			<div id="div-route" class="hide">
+				<div>
+					<label>Danger: <input type="number" id="num-danger"/></label>
+				</div>
 			</div>
 		</div>
 		
