@@ -1,0 +1,117 @@
+{
+	"locations": [
+		{
+			"name": "Plymouth",
+			"type": true,
+			"x": 36.4,
+			"y": 279.4,
+			"highlight": false
+		},
+		{
+			"name": "Exeter",
+			"type": true,
+			"x": 48.6,
+			"y": 268.9,
+			"highlight": false
+		},
+		{
+			"name": "Barnstaple",
+			"type": true,
+			"x": 37.2,
+			"y": 255.8,
+			"highlight": false
+		},
+		{
+			"name": "Taunton",
+			"type": true,
+			"x": 57.5,
+			"y": 255.3,
+			"highlight": false
+		},
+		{
+			"name": "Berkeley",
+			"type": true,
+			"x": 68.6,
+			"y": 239.7,
+			"highlight": false
+		},
+		{
+			"name": "Bath",
+			"type": true,
+			"x": 68.1,
+			"y": 249.7,
+			"highlight": false
+		},
+		{
+			"name": "Deal",
+			"type": true,
+			"x": 142.5,
+			"y": 251.9,
+			"highlight": false
+		},
+		{
+			"name": "Chichester",
+			"type": true,
+			"x": 101.4,
+			"y": 264.2,
+			"highlight": false
+		},
+		{
+			"name": "Southampton",
+			"type": true,
+			"x": 81.9,
+			"y": 263.9,
+			"highlight": false
+		},
+		{
+			"name": "Winchester",
+			"type": true,
+			"x": 83.6,
+			"y": 254.7,
+			"highlight": false
+		},
+		{
+			"name": "Mere",
+			"type": true,
+			"x": 70.6,
+			"y": 258.1,
+			"highlight": false
+		},
+		{
+			"name": "Canterbury",
+			"type": true,
+			"x": 133.1,
+			"y": 251.9,
+			"highlight": false
+		},
+		{
+			"name": "Tunbridge",
+			"type": true,
+			"x": 119.7,
+			"y": 253.1,
+			"highlight": false
+		},
+		{
+			"name": "London",
+			"type": true,
+			"x": 110.3,
+			"y": 245.6,
+			"highlight": false
+		},
+		{
+			"name": "Launceston",
+			"type": false,
+			"x": 33.1,
+			"y": 267.2,
+			"highlight": false
+		},
+		{
+			"name": "Honiton",
+			"type": false,
+			"x": 57.5,
+			"y": 263.3,
+			"highlight": false
+		}
+	],
+	"routes": []
+}

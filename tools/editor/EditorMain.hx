@@ -6,6 +6,8 @@ import js.html.Blob;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
 import js.html.DivElement;
+import js.html.Event;
+import js.html.FileReader;
 import js.html.ImageElement;
 import js.html.InputElement;
 import js.html.InputEvent;
@@ -73,7 +75,8 @@ class EditorMain {
 		context.drawImage(map, 0, 0, map.naturalWidth * SCALE, map.naturalHeight * SCALE);
 
 		for (l in locations) {
-			context.fillStyle = l.highlight ? "#FFFF00" : "#FF0000";
+			var c = l.type ? "#FF0000" : "#FF00FF";
+			context.fillStyle = l.highlight ? "#FFFF00" : c;
 
 			context.beginPath();
 			context.ellipse(l.x, l.y, 5, 5, 0, 0, Math.PI * 2);
@@ -212,6 +215,42 @@ class EditorMain {
 
 	private static function onLoad(e:InputEvent) {
 		var ele:InputElement = cast e.target;
+		if (ele.files.length == 0) {
+			return;
+		}
+
+		var reader = new FileReader();
+		reader.onload = function(e:Event) {
+			var data:String = reader.result;
+			loadData(Json.parse(data));
+		}
+		reader.readAsText(ele.files[0]);
+	}
+
+	private static function loadData(data:Dynamic) {
+		// locations
+		locations = new Array<Location>();
+		var dataLocations:Array<Dynamic> = cast data.locations;
+		for (l in dataLocations) {
+			locations.push({
+				name: l.name,
+				type: l.type,
+				x: l.x * SCALE,
+				y: l.y * SCALE,
+				highlight: false
+			});
+		}
+
+		// routes
+		routes = new Array<Route>();
+		var dataRoutes:Array<Dynamic> = cast data.routes;
+		for (r in dataRoutes) {
+			routes.push({
+				a: locations[r.a],
+				b: locations[r.b],
+				danger: r.danger
+			});
+		}
 	}
 
 	private static function showOptions(location:Bool, route:Bool) {
