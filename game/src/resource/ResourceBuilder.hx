@@ -1,5 +1,7 @@
 package resource;
 
+import haxe.macro.Expr.ExprOf;
+import haxe.macro.Expr;
 #if macro
 import haxe.Json;
 import haxe.macro.Context;
@@ -37,6 +39,18 @@ class ResourceBuilder {
 		return Context.makeExpr(imgContent, Context.currentPos());
 	}
 
+	macro public static function buildMap():ExprOf<String> {
+		var map = Json.parse(File.getContent("assets/map.json"));
+
+		var locations:Array<Dynamic> = cast map.locations;
+		var locationString = locations.map(mapLocation).join("|");
+
+		var routes:Array<Dynamic> = cast map.routes;
+		var routeString = routes.map(mapRoute).join("|");
+
+		return Context.makeExpr('$locationString+$routeString', Context.currentPos());
+	}
+
 	#if macro
 	private static function cleanDir(dir) {
 		for (f in FileSystem.readDirectory(dir)) {
@@ -44,6 +58,14 @@ class ResourceBuilder {
 				FileSystem.deleteFile(dir + f);
 			}
 		}
+	}
+
+	private static function mapLocation(l:Dynamic):String {
+		return [l.name, l.type ? 1 : 0, l.x, l.y].join(",");
+	}
+
+	private static function mapRoute(l:Dynamic):String {
+		return [l.a, l.b, l.danger].join(",");
 	}
 	#end
 }

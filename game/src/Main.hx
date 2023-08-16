@@ -3,6 +3,7 @@ package;
 import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import map.Map;
 import map.MapState;
 import resource.Images;
 
@@ -25,6 +26,7 @@ class Main {
 		Browser.window.document.body.onresize = onResize;
 		onResize();
 
+		Map.load();
 		Images.load(() -> {
 			setState(new MapState());
 		});

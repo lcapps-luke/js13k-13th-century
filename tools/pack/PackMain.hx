@@ -33,7 +33,7 @@ class PackMain {
 		if (ROAD_ROLLER) {
 			build(scriptRoll, "index-r.html");
 		}
-		minifyHtml("index-m.html");
+		minifyHtml(ROAD_ROLLER ? "index-r.html" : "index-m.html");
 		pack();
 	}
 
