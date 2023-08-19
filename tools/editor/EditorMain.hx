@@ -1,7 +1,9 @@
 package;
 
+import haxe.DynamicAccess;
 import haxe.Json;
 import js.Browser;
+import js.Syntax;
 import js.html.Blob;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
@@ -17,6 +19,7 @@ import js.html.URL;
 
 class EditorMain {
 	private static inline var SCALE = 3.6;
+	private static var RESOURCE(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
 
 	public static var canvas(default, null):CanvasElement;
 	public static var context(default, null):CanvasRenderingContext2D;
@@ -26,6 +29,7 @@ class EditorMain {
 	public static var routeOptions(default, null):DivElement;
 	public static var inputName(default, null):InputElement;
 	public static var inputDanger(default, null):InputElement;
+	public static var inputDemand(default, null):Map<String, InputElement>;
 
 	private static var locations = new Array<Location>();
 	private static var routes = new Array<Route>();
@@ -62,6 +66,17 @@ class EditorMain {
 		inputDanger = cast Browser.window.document.getElementById("num-danger");
 		inputDanger.onchange = () -> {
 			selectedRoute.danger = inputDanger.valueAsNumber;
+		}
+
+		inputDemand = new Map<String, InputElement>();
+		var demandInputs = Browser.window.document.getElementsByClassName("num-demand");
+		for (di in demandInputs) {
+			var input:InputElement = cast di;
+			inputDemand.set(input.name, input);
+			input.onchange = (e:InputEvent) -> {
+				var ele:InputElement = cast e.target;
+				selectedLocation.demand.set(ele.name, ele.valueAsNumber);
+			}
 		}
 
 		Browser.window.document.getElementById("btn-save").onclick = onSave;
@@ -123,7 +138,8 @@ class EditorMain {
 				y: e.pageY,
 				name: "newtown",
 				type: true,
-				highlight: false
+				highlight: false,
+				demand: makeDemandMap()
 			};
 
 			locations.push(selectedLocation);
@@ -135,7 +151,8 @@ class EditorMain {
 				y: e.pageY,
 				name: "newville",
 				type: false,
-				highlight: false
+				highlight: false,
+				demand: makeDemandMap()
 			};
 
 			locations.push(selectedLocation);
@@ -159,6 +176,15 @@ class EditorMain {
 				}
 			}
 		}
+	}
+
+	private static function makeDemandMap():DynamicAccess<Float> {
+		var demand = new DynamicAccess<Float>();
+		for (r in RESOURCE) {
+			demand.set(r, 1);
+		}
+
+		return demand;
 	}
 
 	private static function onMouseMove(e:MouseEvent) {
@@ -185,12 +211,18 @@ class EditorMain {
 	private static function onSave() {
 		var scaledLocations = new Array<Location>();
 		for (l in locations) {
+			var demand = new DynamicAccess<Float>();
+			for (k in l.demand.keys()) {
+				demand.set(k, roundTo1(l.demand.get(k)));
+			}
+
 			scaledLocations.push({
 				name: l.name,
 				type: l.type,
 				x: roundTo1(l.x / SCALE),
 				y: roundTo1(l.y / SCALE),
-				highlight: false
+				highlight: false,
+				demand: demand
 			});
 		}
 
@@ -232,12 +264,15 @@ class EditorMain {
 		locations = new Array<Location>();
 		var dataLocations:Array<Dynamic> = cast data.locations;
 		for (l in dataLocations) {
+			var demand = l.demand == null ? makeDemandMap() : l.demand;
+
 			locations.push({
 				name: l.name,
 				type: l.type,
 				x: l.x * SCALE,
 				y: l.y * SCALE,
-				highlight: false
+				highlight: false,
+				demand: demand
 			});
 		}
 
@@ -257,6 +292,10 @@ class EditorMain {
 		if (location) {
 			locationOptions.classList.remove("hide");
 			inputName.value = selectedLocation.name;
+
+			for (d in selectedLocation.demand.keys()) {
+				inputDemand.get(d).valueAsNumber = selectedLocation.demand.get(d);
+			}
 		}
 		else {
 			locationOptions.classList.add("hide");
@@ -277,6 +316,7 @@ typedef Location = {
 	var y:Float;
 	var type:Bool;
 	var highlight:Bool;
+	var demand:DynamicAccess<Float>;
 };
 
 typedef Route = {

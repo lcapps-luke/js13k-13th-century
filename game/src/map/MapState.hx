@@ -22,12 +22,17 @@ class MapState extends State {
 		Main.context.scale(ZOOM, ZOOM);
 
 		Main.context.drawImage(Images.map, 0, 0);
+		Main.context.font = "1px serif";
 
 		for (l in Map.locations) {
-			Main.context.fillStyle = l.type == 1 ? "#FF0000" : "#FF00FF";
+			Main.context.fillStyle = l.type == 1 ? "#F00" : "#F0F";
 			Main.context.beginPath();
 			Main.context.ellipse(l.x, l.y, 1, 1, 0, 0, Math.PI * 2);
 			Main.context.fill();
+
+			Main.context.fillStyle = "#000";
+			var tw = Main.context.measureText(l.name).width;
+			Main.context.fillText(l.name, l.x - tw / 2, l.y - 2);
 		}
 
 		Main.context.restore();

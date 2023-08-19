@@ -1,5 +1,6 @@
 package resource;
 
+import haxe.DynamicAccess;
 import haxe.macro.Expr.ExprOf;
 import haxe.macro.Expr;
 #if macro
@@ -61,7 +62,14 @@ class ResourceBuilder {
 	}
 
 	private static function mapLocation(l:Dynamic):String {
-		return [l.name, l.type ? 1 : 0, l.x, l.y].join(",");
+		var data:Array<Dynamic> = [l.name, l.type ? 1 : 0, l.x, l.y];
+
+		var demandMap:DynamicAccess<Float> = cast l.demand;
+		for (d in map.Map.resources) {
+			data.push(demandMap.get(d));
+		}
+
+		return data.join(",");
 	}
 
 	private static function mapRoute(l:Dynamic):String {
