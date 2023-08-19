@@ -6,6 +6,7 @@ class Map {
 	public static var locations(default, null):Array<Location> = [];
 	public static var routes(default, null):Array<Route> = [];
 	public static var resources(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
+	public static var currentLocation:Location;
 
 	public static function load() {
 		if (locations.length > 0) {
@@ -17,6 +18,8 @@ class Map {
 
 		loadLocations(lr[0].split("|"));
 		loadRoutes(lr[1].split("|"));
+
+		currentLocation = locations.filter(l -> l.name == "Launceston")[0];
 	}
 
 	private static inline function loadLocations(s:Array<String>) {
@@ -32,7 +35,9 @@ class Map {
 				visited: false,
 				known: true,
 				baseDemand: d,
-				demand: d.copy()
+				demand: d.copy(),
+				high: -1,
+				low: -1
 			});
 		}
 	}
@@ -58,6 +63,8 @@ typedef Location = {
 	var known:Bool;
 	var baseDemand:Array<Float>;
 	var demand:Array<Float>;
+	var high:Int;
+	var low:Int;
 };
 
 typedef Route = {
