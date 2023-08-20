@@ -6,6 +6,7 @@ import js.html.CanvasRenderingContext2D;
 import map.Map;
 import map.MapState;
 import resource.Images;
+import ui.Mouse;
 
 class Main {
 	@:native("e")
@@ -30,7 +31,8 @@ class Main {
 		Images.load(() -> {
 			setState(new MapState());
 		});
-		// TODO init
+		Mouse.init();
+		Inventory.init();
 
 		Browser.window.requestAnimationFrame(update);
 	}
@@ -52,6 +54,7 @@ class Main {
 		}
 
 		lastFrame = s;
+		Mouse.update();
 		Browser.window.requestAnimationFrame(update);
 	}
 

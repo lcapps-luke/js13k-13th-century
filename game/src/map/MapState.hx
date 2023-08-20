@@ -1,6 +1,9 @@
 package map;
 
+import location.LocationState;
+import map.Map;
 import resource.Images;
+import ui.Mouse;
 
 class MapState extends State {
 	private static inline var ZOOM:Float = 25;
@@ -10,6 +13,8 @@ class MapState extends State {
 
 	private var locX:Float = 0;
 	private var locY:Float = 0;
+
+	private var menu:MapStateMenu = null;
 
 	public function new() {
 		super();
@@ -66,6 +71,10 @@ class MapState extends State {
 		Main.context.ellipse(locX, locY, 1.2, 1.2, 0, 0, Math.PI * 2);
 		Main.context.stroke();
 
+		var mx = (Mouse.X - viewX) / ZOOM;
+		var my = (Mouse.Y - viewY) / ZOOM;
+
+		var selectedLocation:Location = null;
 		for (l in Map.locations) {
 			Main.context.fillStyle = l.type == 1 ? "#F00" : "#F0F"; // 0123456789abcdef
 			Main.context.beginPath();
@@ -82,9 +91,40 @@ class MapState extends State {
 			if (l.low > -1) {
 				Main.context.fillText('📉 ${Map.resources[l.low]}', l.x + 2, l.y + 1);
 			}
+
+			if (menu == null && Math.sqrt(Math.pow(mx - l.x, 2) + Math.pow(my - l.y, 2)) < 2) {
+				Main.context.strokeStyle = "#fff";
+				Main.context.lineWidth = 0.2;
+				Main.context.beginPath();
+				Main.context.ellipse(l.x, l.y, 1.2, 1.2, 0, 0, Math.PI * 2);
+				Main.context.stroke();
+
+				if (Mouse.CLICK) {
+					selectedLocation = l;
+				}
+			}
 		}
 
 		Main.context.restore();
+
+		if (selectedLocation != null) {
+			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);
+		}
+
+		if (menu != null) {
+			menu.update(s);
+		}
+	}
+
+	private function onLocationMenuChoice(location:Location, choice:Int) {
+		menu = null;
+
+		if (choice == MapStateMenu.OPT_ENTER) {
+			Main.setState(new LocationState(location));
+		}
+		else if (choice == MapStateMenu.OPT_TRAVEL) {
+			// TODO start travel anim
+		}
 	}
 
 	private function lookAt(x:Float, y:Float) {

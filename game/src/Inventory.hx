@@ -1,4 +1,4 @@
-package map;
+package;
 
 class Inventory {
 	public static var pence:Int;
