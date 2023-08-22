@@ -3,6 +3,10 @@ package map;
 import resource.ResourceBuilder;
 
 class Map {
+	public static inline var PX_TO_MILES = 2.5;
+	public static inline var TRAVEL_SPEED = 5;
+	public static inline var TRAVEL_HOURS_PER_DAY = 14;
+
 	public static var locations(default, null):Array<Location> = [];
 	public static var routes(default, null):Array<Route> = [];
 	public static var resources(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
@@ -51,6 +55,16 @@ class Map {
 				danger: Std.parseFloat(p[2])
 			});
 		}
+	}
+
+	public static function getRouteTo(dest:Location):Null<Route> {
+		for (r in routes) {
+			if ((r.a == currentLocation && r.b == dest) || (r.a == dest && r.b == currentLocation)) {
+				return r;
+			}
+		}
+
+		return null;
 	}
 }
 

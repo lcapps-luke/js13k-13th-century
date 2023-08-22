@@ -9,8 +9,8 @@ class MapStateMenu extends State {
 	public static inline var OPT_RETURN = 2;
 
 	private var l:Location;
-	private var d:Int;
-	private var t:Int;
+	private var d:Int = 0;
+	private var t:Int = 0;
 
 	private var options:Array<Button>;
 
@@ -19,11 +19,15 @@ class MapStateMenu extends State {
 		bg = "#0008";
 
 		this.l = l;
-		this.d = 0; // distance?
-		this.t = 0; // time?
+
+		var r = Map.getRouteTo(l);
+		if (r != null) {
+			d = Math.ceil(Math.sqrt(Math.pow(r.a.x - r.b.x, 2) + Math.pow(r.a.y - r.b.y, 2)) * Map.PX_TO_MILES);
+			t = Math.ceil((this.d / Map.TRAVEL_SPEED) / Map.TRAVEL_HOURS_PER_DAY);
+		}
 
 		var tr = new Button("Travel");
-		tr.enable(l != Map.currentLocation);
+		tr.enable(l != Map.currentLocation && r != null);
 		tr.onClick = () -> c(l, OPT_TRAVEL);
 
 		var en = new Button("Enter");
@@ -47,11 +51,21 @@ class MapStateMenu extends State {
 
 		Main.context.font = "80px serif";
 		Main.context.fillStyle = "#fff";
-		var tw = Main.context.measureText(l.name).width;
-		Main.context.fillText(l.name, Main.canvas.width / 2 - tw / 2, Main.canvas.height / 4);
+		textCenter(l.name, Main.canvas.height / 4);
+
+		if (d > 0) {
+			Main.context.font = "40px serif";
+			textCenter('Distance: $d miles', Main.canvas.height / 4 + 100);
+			textCenter('Travel Time: $t days', Main.canvas.height / 4 + 150);
+		}
 
 		for (b in options) {
 			b.update();
 		}
+	}
+
+	private function textCenter(str:String, y:Float) {
+		var w = Main.context.measureText(str).width;
+		Main.context.fillText(str, Main.canvas.width / 2 - w / 2, y);
 	}
 }

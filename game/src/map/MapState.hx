@@ -16,6 +16,10 @@ class MapState extends State {
 
 	private var menu:MapStateMenu = null;
 
+	private var travelTarget:Location = null;
+	private var travelProgress:Float = 0;
+	private var travelSpeed:Float = 0;
+
 	public function new() {
 		super();
 		lookAt(30, 270);
@@ -92,7 +96,7 @@ class MapState extends State {
 				Main.context.fillText('📉 ${Map.resources[l.low]}', l.x + 2, l.y + 1);
 			}
 
-			if (menu == null && Math.sqrt(Math.pow(mx - l.x, 2) + Math.pow(my - l.y, 2)) < 2) {
+			if (canInteract() && Math.sqrt(Math.pow(mx - l.x, 2) + Math.pow(my - l.y, 2)) < 2) {
 				Main.context.strokeStyle = "#fff";
 				Main.context.lineWidth = 0.2;
 				Main.context.beginPath();
@@ -114,6 +118,24 @@ class MapState extends State {
 		if (menu != null) {
 			menu.update(s);
 		}
+
+		if (travelTarget != null) {
+			travelProgress += travelSpeed * s;
+
+			locX = Map.currentLocation.x + (travelTarget.x - Map.currentLocation.x) * travelProgress;
+			locY = Map.currentLocation.y + (travelTarget.y - Map.currentLocation.y) * travelProgress;
+
+			if (travelProgress >= 1) {
+				Map.currentLocation = travelTarget;
+				locX = travelTarget.x;
+				locY = travelTarget.y;
+				travelTarget = null;
+			}
+		}
+	}
+
+	private inline function canInteract():Bool {
+		return menu == null && travelTarget == null;
 	}
 
 	private function onLocationMenuChoice(location:Location, choice:Int) {
@@ -123,7 +145,10 @@ class MapState extends State {
 			Main.setState(new LocationState(location));
 		}
 		else if (choice == MapStateMenu.OPT_TRAVEL) {
-			// TODO start travel anim
+			var r = Map.getRouteTo(location);
+			travelTarget = location;
+			travelProgress = 0;
+			travelSpeed = 15 / Math.sqrt(Math.pow(r.a.x - r.b.x, 2) + Math.pow(r.a.y - r.b.y, 2));
 		}
 	}
 
