@@ -18,6 +18,7 @@ class Main {
 	@:native("l")
 	public static var lastFrame:Float = 0;
 
+	@:native("t")
 	private static var state:State = null;
 
 	public static function main() {

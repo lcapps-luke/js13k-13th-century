@@ -10,6 +10,7 @@ class Map {
 	public static var locations(default, null):Array<Location> = [];
 	public static var routes(default, null):Array<Route> = [];
 	public static var resources(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
+	public static var resourceBasePrices(default, null) = [10, 15, 20, 15, 20, 25];
 	public static var currentLocation:Location;
 
 	public static function load() {
@@ -30,6 +31,7 @@ class Map {
 		for (l in s) {
 			var p = l.split(",");
 			var d = p.slice(4).map(Std.parseFloat);
+			var q = d.map(d -> calcQty(Std.parseInt(p[1]), d));
 
 			locations.push({
 				name: p[0],
@@ -40,10 +42,15 @@ class Map {
 				known: true,
 				baseDemand: d,
 				demand: d.copy(),
+				qty: q,
 				high: -1,
 				low: -1
 			});
 		}
+	}
+
+	public static inline function calcQty(type:Int, demand:Float):Int {
+		return Math.round((-demand * 49 + 99) * (type == 1 ? 1 : 0.5));
 	}
 
 	private static inline function loadRoutes(s:Array<String>) {
@@ -77,6 +84,7 @@ typedef Location = {
 	var known:Bool;
 	var baseDemand:Array<Float>;
 	var demand:Array<Float>;
+	var qty:Array<Int>;
 	var high:Int;
 	var low:Int;
 };

@@ -22,7 +22,6 @@ class MapState extends State {
 
 	public function new() {
 		super();
-		lookAt(30, 270);
 		bg = "#0000FF";
 
 		for (l in Map.locations) {
@@ -48,6 +47,8 @@ class MapState extends State {
 
 	override function update(s:Float) {
 		super.update(s);
+
+		lookAt(locX, locY);
 
 		Main.context.save();
 		Main.context.translate(viewX, viewY);

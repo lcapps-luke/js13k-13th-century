@@ -10,9 +10,14 @@ class Region {
 	public var y:Float = 0;
 	public var w:Float = 0;
 	public var h:Float = 0;
+
+	@:native("s")
 	public var state:Int = STATE_NORMAL;
+
+	@:native("o")
 	public var onClick:Void->Void = null;
 
+	@:native("u")
 	public function update() {
 		if (state == STATE_DISABLED) {
 			return;
@@ -30,6 +35,7 @@ class Region {
 		}
 	}
 
+	@:native("e")
 	public function enable(e:Bool) {
 		state = e ? STATE_NORMAL : STATE_DISABLED;
 	}

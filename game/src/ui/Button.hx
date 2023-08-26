@@ -2,19 +2,24 @@ package ui;
 
 class Button extends Region {
 	private static inline var PAD:Float = 10;
-	private static inline var TEXT_SIZE:Float = 30;
 
+	private var textSize:Float;
+
+	@:native("t")
 	private var text:String;
+
+	@:native("c")
 	private var colour:String;
 
-	public function new(text:String, colour:String = "#FFF", enabled:Bool = true) {
+	public function new(text:String, colour:String = "#FFF", enabled:Bool = true, textSize:Float = 30) {
 		this.text = text;
 		this.colour = colour;
 		state = enabled ? Region.STATE_NORMAL : Region.STATE_DISABLED;
+		this.textSize = textSize;
 
-		Main.context.font = '${TEXT_SIZE}px serif';
+		Main.context.font = '${textSize}px serif';
 		w = PAD * 2 + Main.context.measureText(text).width;
-		h = PAD * 2 + TEXT_SIZE;
+		h = PAD * 2 + textSize;
 	}
 
 	override function update() {
@@ -37,9 +42,9 @@ class Button extends Region {
 			Main.context.globalAlpha = 1;
 		}
 
-		Main.context.font = '${TEXT_SIZE}px serif';
+		Main.context.font = '${textSize}px serif';
 		Main.context.fillStyle = colour;
-		Main.context.fillText(text, x + PAD, y + PAD + TEXT_SIZE * 0.75);
+		Main.context.fillText(text, x + PAD, y + PAD + textSize * 0.75);
 
 		Main.context.globalAlpha = 1;
 	}
