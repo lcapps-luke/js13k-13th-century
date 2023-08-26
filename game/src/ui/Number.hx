@@ -1,6 +1,7 @@
 package ui;
 
 class Number {
+	@:native("ts")
 	private var textSize:Float = 60;
 	private var pad:Float = 0;
 
@@ -11,7 +12,9 @@ class Number {
 	public var x:Float = 0;
 	public var y:Float = 0;
 
+	@:native("sb")
 	private var subBtn:Button;
+	@:native("ab")
 	private var addBtn:Button;
 
 	public function new(val:Int = 0, min:Int = 0, max:Int = 999) {

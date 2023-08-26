@@ -16,8 +16,11 @@ class MapState extends State {
 
 	private var menu:MapStateMenu = null;
 
+	@:native("tt")
 	private var travelTarget:Location = null;
+	@:native("tp")
 	private var travelProgress:Float = 0;
+	@:native("ts")
 	private var travelSpeed:Float = 0;
 
 	public function new() {

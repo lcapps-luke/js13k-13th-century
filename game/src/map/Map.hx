@@ -7,10 +7,19 @@ class Map {
 	public static inline var TRAVEL_SPEED = 5;
 	public static inline var TRAVEL_HOURS_PER_DAY = 14;
 
+	@:native("l")
 	public static var locations(default, null):Array<Location> = [];
+
+	@:native("r")
 	public static var routes(default, null):Array<Route> = [];
+
+	@:native("e")
 	public static var resources(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
+
+	@:native("b")
 	public static var resourceBasePrices(default, null) = [10, 15, 20, 15, 20, 25];
+
+	@:native("c")
 	public static var currentLocation:Location;
 
 	public static function load() {
@@ -49,6 +58,7 @@ class Map {
 		}
 	}
 
+	@:native("cq")
 	public static inline function calcQty(type:Int, demand:Float):Int {
 		return Math.round((-demand * 49 + 99) * (type == 1 ? 1 : 0.5));
 	}
@@ -64,6 +74,7 @@ class Map {
 		}
 	}
 
+	@:native("grt")
 	public static function getRouteTo(dest:Location):Null<Route> {
 		for (r in routes) {
 			if ((r.a == currentLocation && r.b == dest) || (r.a == dest && r.b == currentLocation)) {
