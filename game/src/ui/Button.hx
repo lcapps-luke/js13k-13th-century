@@ -1,7 +1,5 @@
 package ui;
 
-import js.lib.RegExp;
-
 class Button extends Region {
 	private static inline var PAD:Float = 10;
 	private static inline var TEXT_SIZE:Float = 30;

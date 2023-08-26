@@ -80,6 +80,10 @@ class MapState extends State {
 
 		var selectedLocation:Location = null;
 		for (l in Map.locations) {
+			if (!l.known) {
+				continue;
+			}
+
 			Main.context.fillStyle = l.type == 1 ? "#F00" : "#F0F"; // 0123456789abcdef
 			Main.context.beginPath();
 			Main.context.ellipse(l.x, l.y, 1, 1, 0, 0, Math.PI * 2);
