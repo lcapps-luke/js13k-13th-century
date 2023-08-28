@@ -145,7 +145,7 @@ class MapState extends State {
 		}
 	}
 
-	private function lookAt(x:Float, y:Float) {
+	private inline function lookAt(x:Float, y:Float) {
 		viewX = (Main.canvas.width / 2 - x * ZOOM);
 		viewY = (Main.canvas.height / 2 - y * ZOOM);
 	}

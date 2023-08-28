@@ -52,10 +52,8 @@ class Map {
 				type: t,
 				x: Std.parseFloat(p[2]),
 				y: Std.parseFloat(p[3]),
-				visited: false,
 				known: t == TYPE_TOWN,
-				baseDemand: d,
-				demand: d.copy(),
+				demand: d,
 				qty: q,
 				high: -1,
 				low: -1
@@ -63,7 +61,6 @@ class Map {
 		}
 	}
 
-	@:native("cq")
 	public static inline function calcQty(type:Int, demand:Float):Int {
 		return Math.round((-demand * 49 + 99) * (type == TYPE_TOWN ? 1 : 0.5));
 	}
@@ -128,9 +125,7 @@ typedef Location = {
 	var x:Float;
 	var y:Float;
 	var type:Int;
-	var visited:Bool;
 	var known:Bool;
-	var baseDemand:Array<Float>;
 	var demand:Array<Float>;
 	var qty:Array<Int>;
 	var high:Int;
