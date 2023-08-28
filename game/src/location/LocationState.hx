@@ -23,6 +23,13 @@ class LocationState extends State {
 		width = o.w;
 		options.push(o);
 
+		o = new Button("Public House");
+		o.onClick = function() {
+			Main.setState(new PubState(location));
+		}
+		width += o.w;
+		options.push(o);
+
 		o = new Button("Leave");
 		o.onClick = function() {
 			Main.setState(new MapState());

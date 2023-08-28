@@ -110,7 +110,7 @@ class MapState extends State {
 
 			if (travelProgress >= 1) {
 				Map.currentLocation = travelTarget;
-				Map.revealNeighbors(); // TODO move to information
+				Map.reveal(Map.currentLocation, []);
 				locX = travelTarget.x;
 				locY = travelTarget.y;
 				selectedLocation = travelTarget;

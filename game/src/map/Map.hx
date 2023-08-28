@@ -36,8 +36,7 @@ class Map {
 		loadRoutes(lr[1].split("|"));
 
 		currentLocation = locations[ResourceBuilder.buildLocationIndex("Launceston")];
-		reveal(currentLocation);
-		revealNeighbors();
+		reveal(currentLocation, []);
 	}
 
 	private static inline function loadLocations(s:Array<String>) {
@@ -56,7 +55,8 @@ class Map {
 				demand: d,
 				qty: q,
 				high: -1,
-				low: -1
+				low: -1,
+				info: false
 			});
 		}
 	}
@@ -88,17 +88,23 @@ class Map {
 	}
 
 	@:native("rn")
-	public static function revealNeighbors() {
+	public static function revealNeighbors():Array<String> {
+		var res:Array<String> = [];
 		for (r in routes) {
 			if (r.a == currentLocation || r.b == currentLocation) {
-				reveal(r.a);
-				reveal(r.b);
+				reveal(r.a, res);
+				reveal(r.b, res);
 			}
 		}
+		return res;
 	}
 
 	@:native("re")
-	private static function reveal(l:Location) {
+	public static function reveal(l:Location, r:Array<String>) {
+		if (!l.known) {
+			r.push('Learnt about the neighbouring village of ${l.name}');
+		}
+
 		l.known = true;
 
 		if (l.high == -1) {
@@ -116,6 +122,8 @@ class Map {
 					l.low = i;
 				}
 			}
+
+			r.push('Learnt about the market demand in ${l.name}');
 		}
 	}
 }
@@ -130,6 +138,7 @@ typedef Location = {
 	var qty:Array<Int>;
 	var high:Int;
 	var low:Int;
+	var info:Bool;
 };
 
 typedef Route = {
