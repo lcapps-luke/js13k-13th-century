@@ -6,6 +6,8 @@ class Map {
 	public static inline var PX_TO_MILES = 2.5;
 	public static inline var TRAVEL_SPEED = 5;
 	public static inline var TRAVEL_HOURS_PER_DAY = 14;
+	public static inline var TYPE_VILLAGE = 0;
+	public static inline var TYPE_TOWN = 1;
 
 	@:native("l")
 	public static var locations(default, null):Array<Location> = [];
@@ -33,7 +35,9 @@ class Map {
 		loadLocations(lr[0].split("|"));
 		loadRoutes(lr[1].split("|"));
 
-		currentLocation = locations.filter(l -> l.name == "Launceston")[0];
+		currentLocation = locations[ResourceBuilder.buildLocationIndex("Launceston")];
+		reveal(currentLocation);
+		revealNeighbors();
 	}
 
 	private static inline function loadLocations(s:Array<String>) {
@@ -41,14 +45,15 @@ class Map {
 			var p = l.split(",");
 			var d = p.slice(4).map(Std.parseFloat);
 			var q = d.map(d -> calcQty(Std.parseInt(p[1]), d));
+			var t = Std.parseInt(p[1]);
 
 			locations.push({
 				name: p[0],
-				type: Std.parseInt(p[1]),
+				type: t,
 				x: Std.parseFloat(p[2]),
 				y: Std.parseFloat(p[3]),
 				visited: false,
-				known: true,
+				known: t == TYPE_TOWN,
 				baseDemand: d,
 				demand: d.copy(),
 				qty: q,
@@ -60,7 +65,7 @@ class Map {
 
 	@:native("cq")
 	public static inline function calcQty(type:Int, demand:Float):Int {
-		return Math.round((-demand * 49 + 99) * (type == 1 ? 1 : 0.5));
+		return Math.round((-demand * 49 + 99) * (type == TYPE_TOWN ? 1 : 0.5));
 	}
 
 	private static inline function loadRoutes(s:Array<String>) {
@@ -83,6 +88,38 @@ class Map {
 		}
 
 		return null;
+	}
+
+	@:native("rn")
+	public static function revealNeighbors() {
+		for (r in routes) {
+			if (r.a == currentLocation || r.b == currentLocation) {
+				reveal(r.a);
+				reveal(r.b);
+			}
+		}
+	}
+
+	@:native("re")
+	private static function reveal(l:Location) {
+		l.known = true;
+
+		if (l.high == -1) {
+			var highVal:Float = -10;
+			var lowVal:Float = 10;
+
+			for (i in 0...l.demand.length) {
+				var d = l.demand[i];
+				if (d > highVal) {
+					highVal = d;
+					l.high = i;
+				}
+				if (d < lowVal) {
+					lowVal = d;
+					l.low = i;
+				}
+			}
+		}
 	}
 }
 

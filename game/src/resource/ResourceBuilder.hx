@@ -52,6 +52,18 @@ class ResourceBuilder {
 		return Context.makeExpr('$locationString+$routeString', Context.currentPos());
 	}
 
+	macro public static function buildLocationIndex(name:String):ExprOf<Int> {
+		var map = Json.parse(File.getContent("assets/map.json"));
+		var locations:Array<Dynamic> = cast map.locations;
+		for (i in 0...locations.length) {
+			if (locations[i].name == name) {
+				return Context.makeExpr(i, Context.currentPos());
+			}
+		}
+
+		return Context.makeExpr(-1, Context.currentPos());
+	}
+
 	#if macro
 	private static function cleanDir(dir) {
 		for (f in FileSystem.readDirectory(dir)) {

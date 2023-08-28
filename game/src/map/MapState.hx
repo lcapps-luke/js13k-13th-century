@@ -27,23 +27,6 @@ class MapState extends State {
 		super();
 		bg = "#0000FF";
 
-		for (l in Map.locations) {
-			var highVal:Float = -10;
-			var lowVal:Float = 10;
-
-			for (i in 0...l.demand.length) {
-				var d = l.demand[i];
-				if (d > highVal) {
-					highVal = d;
-					l.high = i;
-				}
-				if (d < lowVal) {
-					lowVal = d;
-					l.low = i;
-				}
-			}
-		}
-
 		locX = Map.currentLocation.x;
 		locY = Map.currentLocation.y;
 	}
@@ -88,7 +71,7 @@ class MapState extends State {
 				continue;
 			}
 
-			Main.context.fillStyle = l.type == 1 ? "#F00" : "#F0F"; // 0123456789abcdef
+			Main.context.fillStyle = l.type == Map.TYPE_TOWN ? "#F00" : "#F0F"; // 0123456789abcdef
 			Main.context.beginPath();
 			Main.context.ellipse(l.x, l.y, 1, 1, 0, 0, Math.PI * 2);
 			Main.context.fill();
@@ -119,14 +102,6 @@ class MapState extends State {
 
 		Main.context.restore();
 
-		if (selectedLocation != null) {
-			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);
-		}
-
-		if (menu != null) {
-			menu.update(s);
-		}
-
 		if (travelTarget != null) {
 			travelProgress += travelSpeed * s;
 
@@ -135,10 +110,20 @@ class MapState extends State {
 
 			if (travelProgress >= 1) {
 				Map.currentLocation = travelTarget;
+				Map.revealNeighbors(); // TODO move to information
 				locX = travelTarget.x;
 				locY = travelTarget.y;
+				selectedLocation = travelTarget;
 				travelTarget = null;
 			}
+		}
+
+		if (selectedLocation != null) {
+			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);
+		}
+
+		if (menu != null) {
+			menu.update(s);
 		}
 	}
 
