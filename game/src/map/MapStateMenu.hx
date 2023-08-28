@@ -27,7 +27,7 @@ class MapStateMenu extends State {
 		}
 
 		var tr = new Button("Travel");
-		tr.enable(l != Map.currentLocation && r != null);
+		tr.enable(l != Map.currentLocation && r != null && Map.currentDay < Map.TOTAL_DAYS);
 		tr.onClick = () -> c({
 			location: l,
 			option: OPT_TRAVEL,

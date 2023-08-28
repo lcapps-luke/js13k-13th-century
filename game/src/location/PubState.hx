@@ -13,7 +13,6 @@ class PubState extends State {
 
 	public function new(l:Location) {
 		super();
-		bg = "#000";
 		this.l = l;
 
 		var width = 0.0;

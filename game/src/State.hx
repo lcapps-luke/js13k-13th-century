@@ -1,7 +1,7 @@
 package;
 
 abstract class State {
-	private var bg:String = "#FFF";
+	private var bg:String = "#000";
 
 	public function new() {}
 

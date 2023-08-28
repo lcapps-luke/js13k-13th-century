@@ -4,6 +4,7 @@ import location.LocationState;
 import map.Map;
 import map.MapStateMenu.MapMenuResult;
 import resource.Images;
+import ui.Button;
 import ui.Mouse;
 
 class MapState extends State {
@@ -26,12 +27,20 @@ class MapState extends State {
 	@:native("ti")
 	private var travelTime:Int = 0;
 
+	@:native("rb")
+	private var reportButton:Button;
+
 	public function new() {
 		super();
-		bg = "#0000FF";
+		bg = "#00F";
 
 		locX = Map.currentLocation.x;
 		locY = Map.currentLocation.y;
+
+		reportButton = new Button("Report Earnings", "#fff", true, 80);
+		reportButton.x = Main.canvas.width / 2 - reportButton.w / 2;
+		reportButton.y = Main.canvas.height * 0.8 - reportButton.h / 2;
+		reportButton.onClick = () -> Main.setState(new EndState());
 	}
 
 	override function update(s:Float) {
@@ -130,6 +139,12 @@ class MapState extends State {
 		Main.context.strokeStyle = "#000";
 		Main.context.lineWidth = 8;
 		Main.fillAndOutlineText('Days Remaining: $dr', 30, 60);
+
+		if (dr < 1) {
+			Main.context.fillStyle = "#000a";
+			Main.context.fillRect(reportButton.x - 20, reportButton.y - 20, reportButton.w + 40, reportButton.h + 40);
+			reportButton.update();
+		}
 
 		if (selectedLocation != null) {
 			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);

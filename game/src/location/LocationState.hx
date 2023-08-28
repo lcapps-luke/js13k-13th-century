@@ -12,7 +12,6 @@ class LocationState extends State {
 
 	public function new(location:Location) {
 		super();
-		bg = "#000";
 		this.l = location;
 
 		var width = 0.0;

@@ -16,7 +16,6 @@ class MarketState extends State {
 
 	public function new(l:Location) {
 		super();
-		bg = "#000";
 		this.l = l;
 
 		for (p in [0, .14, .28, .42, .60, .73, .90]) {
