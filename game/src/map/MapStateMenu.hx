@@ -14,7 +14,7 @@ class MapStateMenu extends State {
 
 	private var options:Array<Button>;
 
-	public function new(l:Location, c:Location->Int->Void) {
+	public function new(l:Location, c:MapMenuResult->Void) {
 		super();
 		bg = "#0008";
 
@@ -28,14 +28,29 @@ class MapStateMenu extends State {
 
 		var tr = new Button("Travel");
 		tr.enable(l != Map.currentLocation && r != null);
-		tr.onClick = () -> c(l, OPT_TRAVEL);
+		tr.onClick = () -> c({
+			location: l,
+			option: OPT_TRAVEL,
+			time: t,
+			distance: d
+		});
 
 		var en = new Button("Enter");
 		en.enable(l == Map.currentLocation);
-		en.onClick = () -> c(l, OPT_ENTER);
+		en.onClick = () -> c({
+			location: l,
+			option: OPT_ENTER,
+			time: t,
+			distance: d
+		});
 
 		var ex = new Button("Return");
-		ex.onClick = () -> c(l, OPT_RETURN);
+		ex.onClick = () -> c({
+			location: l,
+			option: OPT_RETURN,
+			time: t,
+			distance: d
+		});
 		options = [tr, en, ex];
 
 		var yacc = Main.canvas.height / 2;
@@ -63,4 +78,15 @@ class MapStateMenu extends State {
 			b.update();
 		}
 	}
+}
+
+typedef MapMenuResult = {
+	@:native("l")
+	var location:Location;
+	@:native("o")
+	var option:Int;
+	@:native("d")
+	var distance:Int;
+	@:native("t")
+	var time:Int;
 }

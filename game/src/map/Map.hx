@@ -8,6 +8,7 @@ class Map {
 	public static inline var TRAVEL_HOURS_PER_DAY = 14;
 	public static inline var TYPE_VILLAGE = 0;
 	public static inline var TYPE_TOWN = 1;
+	public static inline var TOTAL_DAYS = 30;
 
 	@:native("l")
 	public static var locations(default, null):Array<Location> = [];
@@ -23,6 +24,9 @@ class Map {
 
 	@:native("c")
 	public static var currentLocation:Location;
+
+	@:native("day")
+	public static var currentDay:Int = 0;
 
 	public static function load() {
 		if (locations.length > 0) {

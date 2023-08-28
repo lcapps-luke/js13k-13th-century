@@ -2,6 +2,7 @@ package map;
 
 import location.LocationState;
 import map.Map;
+import map.MapStateMenu.MapMenuResult;
 import resource.Images;
 import ui.Mouse;
 
@@ -22,6 +23,8 @@ class MapState extends State {
 	private var travelProgress:Float = 0;
 	@:native("ts")
 	private var travelSpeed:Float = 0;
+	@:native("ti")
+	private var travelTime:Int = 0;
 
 	public function new() {
 		super();
@@ -76,9 +79,10 @@ class MapState extends State {
 			Main.context.ellipse(l.x, l.y, 1, 1, 0, 0, Math.PI * 2);
 			Main.context.fill();
 
-			Main.context.fillStyle = "#000";
+			Main.context.fillStyle = "#fff";
+			Main.context.strokeStyle = "#000";
 			var tw = Main.context.measureText(l.name).width;
-			Main.context.fillText(l.name, l.x - tw / 2, l.y - 2);
+			Main.fillAndOutlineText(l.name, l.x - tw / 2, l.y - 2);
 
 			if (l.high > -1) {
 				Main.context.fillText('📈 ${Map.resources[l.high]}', l.x + 2, l.y - 0.5);
@@ -115,8 +119,17 @@ class MapState extends State {
 				locY = travelTarget.y;
 				selectedLocation = travelTarget;
 				travelTarget = null;
+				Map.currentDay += travelTime;
+				travelTime = 0;
 			}
 		}
+
+		var dr = Map.TOTAL_DAYS - (Map.currentDay + Math.floor(travelTime * travelProgress));
+		Main.context.font = "40px serif";
+		Main.context.fillStyle = "#fff";
+		Main.context.strokeStyle = "#000";
+		Main.context.lineWidth = 8;
+		Main.fillAndOutlineText('Days Remaining: $dr', 30, 60);
 
 		if (selectedLocation != null) {
 			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);
@@ -131,17 +144,18 @@ class MapState extends State {
 		return menu == null && travelTarget == null;
 	}
 
-	private function onLocationMenuChoice(location:Location, choice:Int) {
+	private function onLocationMenuChoice(c:MapMenuResult) {
 		menu = null;
 
-		if (choice == MapStateMenu.OPT_ENTER) {
-			Main.setState(new LocationState(location));
+		if (c.option == MapStateMenu.OPT_ENTER) {
+			Main.setState(new LocationState(c.location));
 		}
-		else if (choice == MapStateMenu.OPT_TRAVEL) {
-			var r = Map.getRouteTo(location);
-			travelTarget = location;
+		else if (c.option == MapStateMenu.OPT_TRAVEL) {
+			var r = Map.getRouteTo(c.location);
+			travelTarget = c.location;
 			travelProgress = 0;
 			travelSpeed = 15 / Math.sqrt(Math.pow(r.a.x - r.b.x, 2) + Math.pow(r.a.y - r.b.y, 2));
+			travelTime = c.time;
 		}
 	}
 

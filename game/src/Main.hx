@@ -63,4 +63,10 @@ class Main {
 	public static function setState(s:State) {
 		state = s;
 	}
+
+	@:native("fot")
+	public static function fillAndOutlineText(str:String, x:Float, y:Float) {
+		Main.context.strokeText(str, x, y);
+		Main.context.fillText(str, x, y);
+	}
 }
