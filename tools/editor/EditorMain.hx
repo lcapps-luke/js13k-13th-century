@@ -20,6 +20,56 @@ import js.html.URL;
 class EditorMain {
 	private static inline var SCALE = 3.6;
 	private static var RESOURCE(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
+	private static var RESOURCE_RANDOM(default, null) = [
+		"🌾" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
+			}
+		},
+		"🐟" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (loc + 1) * 0.9) + 0.1);
+			}
+		},
+		"🧀" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
+			}
+		},
+		"🧂" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
+			}
+		},
+		"🧶" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
+			}
+		},
+		"🧱" => {
+			min: function(loc:Float) {
+				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
+			},
+			max: function(loc:Float) {
+				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
+			}
+		},
+	];
 
 	public static var canvas(default, null):CanvasElement;
 	public static var context(default, null):CanvasRenderingContext2D;
@@ -30,6 +80,7 @@ class EditorMain {
 	public static var inputName(default, null):InputElement;
 	public static var inputDanger(default, null):InputElement;
 	public static var inputDemand(default, null):Map<String, InputElement>;
+	public static var randomLocationType(default, null):InputElement;
 
 	private static var locations = new Array<Location>();
 	private static var routes = new Array<Route>();
@@ -81,6 +132,9 @@ class EditorMain {
 
 		Browser.window.document.getElementById("btn-save").onclick = onSave;
 		Browser.window.document.getElementById("file-load").onchange = onLoad;
+
+		randomLocationType = cast Browser.window.document.getElementById("num-loctype");
+		Browser.window.document.getElementById("btn-random").onclick = onRandomApply;
 	}
 
 	private static function update(s:Float) {
@@ -98,8 +152,12 @@ class EditorMain {
 			context.fill();
 
 			context.fillStyle = "#000";
-			var w = context.measureText(l.name).width;
-			context.fillText(l.name, Math.round(l.x - w / 2), Math.round(l.y - 10));
+			var txt = l.name;
+			if (defaultDemand(l.demand)) {
+				txt += "⚠";
+			}
+			var w = context.measureText(txt).width;
+			context.fillText(txt, Math.round(l.x - w / 2), Math.round(l.y - 10));
 		}
 
 		context.strokeStyle = "2px solid #FF0000";
@@ -119,7 +177,16 @@ class EditorMain {
 		}
 	}
 
-	private static function onMouseDown(e:MouseEvent) {
+	private static function defaultDemand(d:DynamicAccess<Float>) {
+		for (di in RESOURCE) {
+			if (d.get(di) != 1.0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	static function onMouseDown(e:MouseEvent) {
 		start = null;
 
 		if (mode.value == "add-route") {
@@ -307,6 +374,23 @@ class EditorMain {
 		else {
 			routeOptions.classList.add("hide");
 		}
+	}
+
+	private static function onRandomApply() {
+		var locationType:Float = randomLocationType.valueAsNumber; // -1 coastal - 1 inland
+		var locJit = Math.random() * 0.4 - 0.2;
+		locationType = Math.min(Math.max(locationType + locJit, -1), 1);
+
+		for (r in RESOURCE) {
+			var min = RESOURCE_RANDOM[r].min(locationType);
+			var max = RESOURCE_RANDOM[r].max(locationType);
+			var res = min + Math.random() * (max - min);
+			trace('$r: min $min, max $max | $res');
+
+			selectedLocation.demand[r] = res;
+		}
+
+		showOptions(true, false);
 	}
 }
 
