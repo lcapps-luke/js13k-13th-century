@@ -22,7 +22,7 @@ class MapStateMenu extends State {
 
 		var r = Map.getRouteTo(l);
 		if (r != null) {
-			d = Math.ceil(Math.sqrt(Math.pow(r.a.x - r.b.x, 2) + Math.pow(r.a.y - r.b.y, 2)) * Map.PX_TO_MILES);
+			d = Math.ceil(LcMath.dist(r.a.x, r.a.y, r.b.x, r.b.y) * Map.PX_TO_MILES);
 			t = Math.ceil((this.d / Map.TRAVEL_SPEED) / Map.TRAVEL_HOURS_PER_DAY);
 		}
 

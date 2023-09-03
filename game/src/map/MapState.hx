@@ -1,5 +1,6 @@
 package map;
 
+import battle.BattleState;
 import location.LocationState;
 import map.Map;
 import map.MapStateMenu.MapMenuResult;
@@ -26,6 +27,8 @@ class MapState extends State {
 	private var travelSpeed:Float = 0;
 	@:native("ti")
 	private var travelTime:Int = 0;
+
+	private var travelAttack:Float = 0;
 
 	@:native("rb")
 	private var reportButton:Button;
@@ -100,7 +103,7 @@ class MapState extends State {
 				Main.context.fillText('📉 ${Map.resources[l.low]}', l.x + 2, l.y + 1);
 			}
 
-			if (canInteract() && Math.sqrt(Math.pow(mx - l.x, 2) + Math.pow(my - l.y, 2)) < 2) {
+			if (canInteract() && LcMath.dist(mx, my, l.x, l.y) < 2) {
 				Main.context.strokeStyle = "#fff";
 				Main.context.lineWidth = 0.2;
 				Main.context.beginPath();
@@ -130,6 +133,11 @@ class MapState extends State {
 				travelTarget = null;
 				Map.currentDay += travelTime;
 				travelTime = 0;
+			}
+
+			if (travelAttack > 0 && travelProgress > travelAttack) {
+				Main.setState(new BattleState(this));
+				travelAttack = 0;
 			}
 		}
 
@@ -169,8 +177,11 @@ class MapState extends State {
 			var r = Map.getRouteTo(c.location);
 			travelTarget = c.location;
 			travelProgress = 0;
-			travelSpeed = 15 / Math.sqrt(Math.pow(r.a.x - r.b.x, 2) + Math.pow(r.a.y - r.b.y, 2));
+
+			travelSpeed = 15 / LcMath.dist(r.a.x, r.a.y, r.b.x, r.b.y);
 			travelTime = c.time;
+
+			travelAttack = (Math.random() < r.danger) ? 0.5 : 0;
 		}
 	}
 
