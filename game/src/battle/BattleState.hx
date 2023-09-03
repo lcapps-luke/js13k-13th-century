@@ -3,6 +3,7 @@ package battle;
 import map.MapState;
 
 class BattleState extends State {
+	public static inline var TURN_HUD_WIDTH:Float = 250;
 	public static inline var OVER_NOT:Int = 0;
 	public static inline var OVER_WIN:Int = 1;
 	public static inline var OVER_LOSE:Int = 2;
@@ -41,8 +42,6 @@ class BattleState extends State {
 			}
 		}
 
-		// TODO draw turn order
-
 		// update active character
 		if (characters[0].updateTurn(s, turn, characters)) {
 			// move to next char if turn complete
@@ -58,6 +57,48 @@ class BattleState extends State {
 				Main.setState(mapState);
 			}
 		}
+
+		// draw turn order
+		var xAcc:Float = 0;
+		for (c in characters) {
+			if (c.isAlive()) {
+				renderCharacterHud(xAcc, c);
+				xAcc += TURN_HUD_WIDTH;
+			}
+
+			if (xAcc > Main.canvas.width) {
+				break;
+			}
+		}
+	}
+
+	function renderCharacterHud(xAcc:Float, c:Character) {
+		Main.context.fillStyle = "#fff";
+		Main.context.strokeStyle = "#000";
+
+		Main.context.beginPath();
+		Main.context.rect(xAcc, 10, TURN_HUD_WIDTH, 100);
+		Main.context.fill();
+		Main.context.stroke();
+
+		Main.context.font = "30px serif";
+		Main.context.fillStyle = "#000";
+
+		// TODO name
+		Main.context.fillText(c.name, xAcc + 10, 40, TURN_HUD_WIDTH - 20);
+
+		// health
+		var healthStr = [for (i in 0...c.health) "❤"].join("");
+		Main.context.fillText(healthStr, xAcc + 10, 70, TURN_HUD_WIDTH - 20);
+
+		// guard
+		var gc = (c.guard / c.maxGuard) * (TURN_HUD_WIDTH - 20);
+		var gl = (c.lastGuard / c.maxGuard) * (TURN_HUD_WIDTH - 20);
+
+		Main.context.fillStyle = "#F00";
+		Main.context.fillRect(xAcc + 10, 80, gl, 20);
+		Main.context.fillStyle = "#0F0";
+		Main.context.fillRect(xAcc + 10, 80, gc, 20);
 	}
 
 	private function isOver() {

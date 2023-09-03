@@ -2,17 +2,18 @@ package battle;
 
 abstract class Character {
 	private static inline var MOVE_SPEED:Float = 200;
-	public static inline var GUARD_SLIP_SPEED:Float = 100;
+	public static inline var GUARD_SLIP_SPEED:Float = 50;
 	public static inline var TEAM_PLAYER:Int = 0;
 	public static inline var TEAM_BANDIT:Int = 1;
 
 	public var team(default, null):Int;
 	public var speed(default, null):Float;
 
-	private var maxGuard:Float;
-	private var guard:Float;
-	private var lastGuard:Float;
-	private var health:Int;
+	public var maxGuard(default, null):Float;
+	public var guard(default, null):Float;
+	public var lastGuard(default, null):Float;
+	public var health(default, null):Int;
+
 	private var guardTurn:Int = -1;
 	private var attack:Float = 100;
 
@@ -20,6 +21,8 @@ abstract class Character {
 
 	public var x:Float;
 	public var y:Float;
+
+	public var name:String = "Unknown";
 
 	public function new(team:Int, guard:Float, health:Int, speed:Float, weapon:Weapon) {
 		this.team = team;
@@ -32,7 +35,7 @@ abstract class Character {
 	}
 
 	public function update(s:Float) {
-		var gdif = guard - lastGuard;
+		var gdif = lastGuard - guard;
 		var lgIncr = (gdif > 0 ? -GUARD_SLIP_SPEED : GUARD_SLIP_SPEED) * s;
 		lastGuard = Math.abs(gdif) < Math.abs(lgIncr) ? guard : (lastGuard + lgIncr);
 
@@ -53,7 +56,7 @@ abstract class Character {
 
 	public function hit(dmg:Float) {
 		if (guard > 0) {
-			guard -= dmg;
+			guard = Math.max(0, guard - dmg);
 		}
 		else {
 			health--;

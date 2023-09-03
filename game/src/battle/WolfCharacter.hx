@@ -2,7 +2,8 @@ package battle;
 
 class WolfCharacter extends AiCharacter {
 	public function new() {
-		super(Character.TEAM_BANDIT, 20, 1, 5, new WolfClaws());
+		super(Character.TEAM_BANDIT, 50, 1, 5, new WolfClaws());
+		attack = 50;
 	}
 
 	function chooseTarget(chars:Array<Character>):Character {

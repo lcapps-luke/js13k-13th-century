@@ -31,7 +31,7 @@ abstract class AiCharacter extends Character {
 		}
 		else {
 			// attack or guard
-			if (LcMath.dist(x, y, moveToX, moveToY) > weapon.range) {
+			if (LcMath.dist(x, y, tgt.x, tgt.y) > weapon.range) {
 				// guard
 			}
 			else {
@@ -51,7 +51,7 @@ abstract class AiCharacter extends Character {
 		var dir = LcMath.dir(x, y, tgt.x, tgt.y);
 
 		var tgtDist = LcMath.dist(x, y, tgt.x, tgt.y);
-		var dist = Math.min(1000, tgtDist - weapon.range);
+		var dist = Math.min(1000, tgtDist - (weapon.range * 0.9));
 
 		moveToX = x + Math.cos(dir) * dist;
 		moveToY = y + Math.sin(dir) * dist;

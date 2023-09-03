@@ -11,6 +11,7 @@ class PlayerCharacter extends Character {
 
 	override public function new() {
 		super(Character.TEAM_PLAYER, Inventory.playerGuard, Inventory.health, Inventory.speed, new WeaponKnife());
+		name = "You";
 	}
 
 	override function update(s:Float) {
