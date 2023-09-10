@@ -26,7 +26,9 @@ class PlayerCharacter extends Character {
 			if (LcMath.dist(x, y, mx, my) < Character.MOVE_SPEED * s) {
 				x = mx;
 				y = my;
-				doAttack(aimDir, chars);
+				if (!doAttack(aimDir, chars)) {
+					guardTurn = id;
+				}
 				return true;
 			}
 			else {
@@ -39,16 +41,35 @@ class PlayerCharacter extends Character {
 		}
 
 		// TODO controls
-		if (!aiming) {
+		if (!aiming && !Mouse.DOWN) {
 			mx = Mouse.X;
 			my = Mouse.Y;
 		}
+		var validMove = true;
+		for (c in chars) {
+			if (c == this || !c.isAlive()) {
+				continue;
+			}
 
-		Main.context.strokeStyle = "#000";
-		Main.context.lineWidth = 2;
+			if (LcMath.dist(mx, my, c.x, c.y) < Character.RADIUS * 2) {
+				validMove = false;
+				break;
+			}
+		}
+
+		// move line
+		Main.context.strokeStyle = "#00f";
+		Main.context.lineWidth = 4;
+		Main.context.setLineDash([5]);
 		Main.context.beginPath();
 		Main.context.moveTo(x, y);
 		Main.context.lineTo(mx, my);
+		Main.context.stroke();
+		Main.context.setLineDash([]);
+
+		Main.context.strokeStyle = validMove ? "#ff0" : "#f00";
+		Main.context.beginPath();
+		Main.context.ellipse(mx, my, Character.RADIUS, Character.RADIUS, 0, 0, Math.PI * 2);
 		Main.context.stroke();
 
 		if (aiming) {
@@ -59,16 +80,16 @@ class PlayerCharacter extends Character {
 			for (e in chars) {
 				if (e.isAlive() && e.team != team) {
 					if (weapon.willHit(mx, my, aimDir, e)) {
-						Main.context.strokeStyle = "#FF0";
+						Main.context.strokeStyle = "#ff0";
 						Main.context.beginPath();
-						Main.context.ellipse(e.x, e.y, 30, 30, 0, 0, Math.PI * 2);
+						Main.context.ellipse(e.x, e.y, Character.RADIUS * 1.2, Character.RADIUS * 1.2, 0, 0, Math.PI * 2);
 						Main.context.stroke();
 					}
 				}
 			}
 		}
 
-		if (Mouse.DOWN) {
+		if (Mouse.DOWN && validMove) {
 			aiming = true;
 		}
 		else if (aiming) {

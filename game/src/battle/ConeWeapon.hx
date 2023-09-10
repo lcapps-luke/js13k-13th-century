@@ -22,7 +22,10 @@ class ConeWeapon extends Weapon {
 		Main.context.strokeStyle = "#000";
 		Main.context.lineWidth = 2;
 		Main.context.beginPath();
-		Main.context.ellipse(x, y, range, range, dir, -angle / 2, angle / 2);
+		Main.context.moveTo(x, y);
+		Main.context.lineTo(x + Math.cos(dir - angle / 2) * range, y + Math.sin(dir - angle / 2) * range);
+		Main.context.lineTo(x + Math.cos(dir + angle / 2) * range, y + Math.sin(dir + angle / 2) * range);
+		Main.context.lineTo(x, y);
 		Main.context.stroke();
 	}
 }

@@ -7,22 +7,7 @@ class WolfCharacter extends AiCharacter {
 	}
 
 	function chooseTarget(chars:Array<Character>):Character {
-		var c:Character = null;
-		var d:Float = 0;
-
-		for (i in chars) {
-			if (!i.isAlive() || i.team == team) {
-				continue;
-			}
-
-			var s = LcMath.dist(x, y, i.x, i.y);
-			if (c == null || s < d) {
-				c = i;
-				d = s;
-			}
-		}
-
-		return c;
+		return findClosest(this, chars);
 	}
 }
 

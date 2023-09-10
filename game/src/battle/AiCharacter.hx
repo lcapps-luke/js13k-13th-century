@@ -33,6 +33,7 @@ abstract class AiCharacter extends Character {
 			// attack or guard
 			if (LcMath.dist(x, y, tgt.x, tgt.y) > weapon.range) {
 				// guard
+				guardTurn = id;
 			}
 			else {
 				// attack
@@ -47,11 +48,30 @@ abstract class AiCharacter extends Character {
 
 	abstract function chooseTarget(chars:Array<Character>):Character;
 
+	private function findClosest(f:Character, chars:Array<Character>):Character {
+		var c:Character = null;
+		var d:Float = 0;
+
+		for (i in chars) {
+			if (!i.isAlive() || i.team == team) {
+				continue;
+			}
+
+			var s = LcMath.dist(f.x, f.y, i.x, i.y);
+			if (c == null || s < d) {
+				c = i;
+				d = s;
+			}
+		}
+
+		return c;
+	}
+
 	private inline function calculateMoveTarget() {
 		var dir = LcMath.dir(x, y, tgt.x, tgt.y);
 
 		var tgtDist = LcMath.dist(x, y, tgt.x, tgt.y);
-		var dist = Math.min(1000, tgtDist - (weapon.range * 0.9));
+		var dist = Math.min(1000, tgtDist - (weapon.range * 0.9)); // TODO max dist based on speed
 
 		moveToX = x + Math.cos(dir) * dist;
 		moveToY = y + Math.sin(dir) * dist;

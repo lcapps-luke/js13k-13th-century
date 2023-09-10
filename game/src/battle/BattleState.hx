@@ -12,6 +12,7 @@ class BattleState extends State {
 	private var mapState:MapState;
 
 	private var characters = new Array<Character>();
+	private var drawCharacters:Array<Character>;
 	private var turn:Int = 0;
 
 	private var endType:Int = OVER_NOT;
@@ -25,15 +26,24 @@ class BattleState extends State {
 		// TODO populate chars
 		var c:Character = new PlayerCharacter();
 		c.x = Main.canvas.width * 0.25;
-		c.y = Main.canvas.height * 0.5;
+		c.y = Main.canvas.height * 0.25;
 		characters.push(c);
 
-		c = new WolfCharacter();
-		c.x = Main.canvas.width * 0.75;
-		c.y = Main.canvas.height * 0.5;
+		var c:Character = new GuardCharacter();
+		c.x = Main.canvas.width * 0.25;
+		c.y = Main.canvas.height * 0.75;
 		characters.push(c);
+
+		for (i in 0...3) {
+			c = new WolfCharacter();
+			c.x = Main.canvas.width * 0.75;
+			c.y = Main.canvas.height * (0.25 + 0.25 * i);
+			characters.push(c);
+		}
 
 		// TODO sort chars
+
+		drawCharacters = characters.copy();
 	}
 
 	override function update(s:Float) {
@@ -42,7 +52,8 @@ class BattleState extends State {
 		Main.context.drawImage(Images.road, 0, 0);
 
 		// draw characters
-		for (c in characters) {
+		drawCharacters.sort((a, b) -> Math.round(a.y - b.y));
+		for (c in drawCharacters) {
 			if (c.isAlive()) {
 				c.update(s);
 			}
