@@ -1,6 +1,7 @@
 package battle;
 
 import map.MapState;
+import resource.Images;
 
 class BattleState extends State {
 	public static inline var TURN_HUD_WIDTH:Float = 250;
@@ -35,7 +36,9 @@ class BattleState extends State {
 	override function update(s:Float) {
 		super.update(s);
 		// TODO draw bg
-		// TODO draw characters
+		Main.context.drawImage(Images.road, 0, 0);
+
+		// draw characters
 		for (c in characters) {
 			if (c.isAlive()) {
 				c.update(s);

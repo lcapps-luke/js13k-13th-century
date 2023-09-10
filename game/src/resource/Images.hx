@@ -7,6 +7,9 @@ class Images {
 	@:native("m")
 	public static var map:ImageElement;
 
+	@:native("r")
+	public static var road:ImageElement;
+
 	@:native("q")
 	private static var qty = 0;
 
@@ -18,6 +21,7 @@ class Images {
 		Images.callback = callback;
 
 		map = loadImage(ResourceBuilder.buildImage("map.svg"));
+		road = loadImage(ResourceBuilder.buildImage("road.svg"));
 	}
 
 	@:native("i")
