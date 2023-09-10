@@ -14,6 +14,9 @@ class BattleState extends State {
 	private var characters = new Array<Character>();
 	private var turn:Int = 0;
 
+	private var endType:Int = OVER_NOT;
+	private var endTimer:Float = 0;
+
 	public function new(mapState:MapState) {
 		super();
 		bg = "#7C4F30";
@@ -45,18 +48,29 @@ class BattleState extends State {
 			}
 		}
 
-		// update active character
-		if (characters[0].updateTurn(s, turn, characters)) {
-			// move to next char if turn complete
-			turn++;
-			characters.push(characters.shift());
-
-			while (!characters[0].isAlive()) {
+		// check end
+		if (endType == OVER_NOT) {
+			// update active character
+			if (characters[0].updateTurn(s, turn, characters)) {
+				// move to next char if turn complete
+				turn++;
 				characters.push(characters.shift());
-			}
 
-			// TODO check end of battle
-			if (isOver() != OVER_NOT) {
+				while (!characters[0].isAlive()) {
+					characters.push(characters.shift());
+				}
+
+				// check end of battle
+				endType = isOver();
+				if (endType != OVER_NOT) {
+					endTimer = 1;
+				}
+			}
+		}
+		else {
+			endTimer -= s;
+			if (endTimer < 0) {
+				// TODO game over if lose
 				Main.setState(mapState);
 			}
 		}
@@ -87,7 +101,7 @@ class BattleState extends State {
 		Main.context.font = "30px serif";
 		Main.context.fillStyle = "#000";
 
-		// TODO name
+		// name
 		Main.context.fillText(c.name, xAcc + 10, 40, TURN_HUD_WIDTH - 20);
 
 		// health

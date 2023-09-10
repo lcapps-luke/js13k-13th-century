@@ -181,7 +181,7 @@ class MapState extends State {
 			travelSpeed = 15 / LcMath.dist(r.a.x, r.a.y, r.b.x, r.b.y);
 			travelTime = c.time;
 
-			travelAttack = (Math.random() < r.danger) ? 0.5 : 0;
+			travelAttack = 0.25 + Math.random() * .5; // (Math.random() < r.danger) ? 0.5 : 0;
 		}
 	}
 

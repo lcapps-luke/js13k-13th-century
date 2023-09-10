@@ -52,7 +52,7 @@ class PlayerCharacter extends Character {
 		Main.context.stroke();
 
 		if (aiming) {
-			// TODO render weapon aim
+			// render weapon aim
 			aimDir = LcMath.dir(mx, my, Mouse.X, Mouse.Y);
 			weapon.renderAim(mx, my, aimDir);
 
@@ -74,6 +74,7 @@ class PlayerCharacter extends Character {
 		else if (aiming) {
 			moveTurn = id;
 			aiming = false;
+			// TODO show option - attack, guard, cancel
 		}
 
 		return false;
