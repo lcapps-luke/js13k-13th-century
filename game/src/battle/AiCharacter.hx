@@ -22,11 +22,13 @@ abstract class AiCharacter extends Character {
 				x = moveToX;
 				y = moveToY;
 				moveToX = -1;
+				moving = false;
 			}
 			else {
 				var dir = LcMath.dir(x, y, moveToX, moveToY);
 				x += Math.cos(dir) * (Character.MOVE_SPEED * s);
 				y += Math.sin(dir) * (Character.MOVE_SPEED * s);
+				moving = true;
 			}
 		}
 		else {

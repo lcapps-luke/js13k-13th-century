@@ -1,11 +1,16 @@
 package battle;
 
+import js.html.svg.ImageElement;
+
 abstract class Character {
 	private static inline var MOVE_SPEED:Float = 300;
+	private static inline var WALK_CYCLE_SPEED = 10;
+	private static inline var WALK_CYCLE_OFFSET = 5;
+
 	public static inline var GUARD_SLIP_SPEED:Float = 50;
 	public static inline var TEAM_PLAYER:Int = 0;
 	public static inline var TEAM_BANDIT:Int = 1;
-	public static inline var RADIUS:Float = 25;
+	public static inline var RADIUS:Float = 15;
 
 	public var team(default, null):Int;
 	public var speed(default, null):Float;
@@ -24,6 +29,12 @@ abstract class Character {
 	public var y:Float;
 
 	public var name:String = "Unknown";
+
+	private var sprite:ImageElement = null;
+	private var offsetX:Float = 0;
+	private var offsetY:Float = 0;
+	private var walkCycle:Float = 0;
+	private var moving:Bool = false;
 
 	public function new(team:Int, guard:Float, health:Int, speed:Float, weapon:Weapon) {
 		this.team = team;
@@ -46,6 +57,16 @@ abstract class Character {
 		Main.context.ellipse(x, y, RADIUS, RADIUS * .7, 0, 0, Math.PI * 2);
 		Main.context.fill();
 		Main.context.globalAlpha = 1;
+
+		if (sprite != null) {
+			if (moving) {
+				walkCycle += WALK_CYCLE_SPEED * s;
+			}
+			else {
+				walkCycle = 0;
+			}
+			Main.context.drawImage(sprite, x + offsetX, y + offsetY + -Math.abs(Math.sin(walkCycle)) * WALK_CYCLE_OFFSET);
+		}
 	}
 
 	public function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
@@ -83,5 +104,11 @@ abstract class Character {
 			}
 		}
 		return h;
+	}
+
+	public function setSprite(spr:ImageElement, ox:Float, oy:Float) {
+		this.sprite = spr;
+		this.offsetX = ox;
+		this.offsetY = oy;
 	}
 }

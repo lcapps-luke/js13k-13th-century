@@ -1,5 +1,6 @@
 package battle;
 
+import resource.Images;
 import ui.Mouse;
 
 class PlayerCharacter extends Character {
@@ -12,15 +13,12 @@ class PlayerCharacter extends Character {
 	override public function new() {
 		super(Character.TEAM_PLAYER, Inventory.playerGuard, Inventory.health, Inventory.speed, new WeaponKnife());
 		name = "You";
-	}
-
-	override function update(s:Float) {
-		super.update(s);
-		// TODO render & animations
+		setSprite(Images.manList[0], -12, -72);
 	}
 
 	override function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
 		super.updateTurn(s, id, chars);
+		moving = false;
 
 		if (moveTurn == id) {
 			if (LcMath.dist(x, y, mx, my) < Character.MOVE_SPEED * s) {
@@ -35,6 +33,7 @@ class PlayerCharacter extends Character {
 				var dir = Math.atan2(my - y, mx - x);
 				x += Math.cos(dir) * (Character.MOVE_SPEED * s);
 				y += Math.sin(dir) * (Character.MOVE_SPEED * s);
+				moving = true;
 			}
 
 			return false;
