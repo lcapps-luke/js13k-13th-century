@@ -55,6 +55,10 @@ class PlayerCharacter extends Character {
 				break;
 			}
 		}
+		var maxDist = LcMath.maxDist(speed);
+		if (LcMath.dist(x, y, mx, my) > maxDist) {
+			validMove = false;
+		}
 
 		// move line
 		Main.context.strokeStyle = "#00f";
@@ -65,8 +69,12 @@ class PlayerCharacter extends Character {
 		Main.context.lineTo(mx, my);
 		Main.context.stroke();
 
-		Main.context.strokeStyle = "#ff0";
 		Main.context.lineWidth = 2;
+		Main.context.beginPath();
+		Main.context.ellipse(x, y, maxDist, maxDist, 0, 0, Math.PI * 2);
+		Main.context.stroke();
+
+		Main.context.strokeStyle = "#ff0";
 		Main.context.beginPath();
 		Main.context.ellipse(mx, my, weapon.range, weapon.range, 0, 0, Math.PI * 2);
 		Main.context.stroke();

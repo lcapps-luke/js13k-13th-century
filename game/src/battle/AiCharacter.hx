@@ -75,7 +75,7 @@ abstract class AiCharacter extends Character {
 		var dir = LcMath.dir(x, y, tgt.x, tgt.y);
 
 		var tgtDist = LcMath.dist(x, y, tgt.x, tgt.y);
-		var dist = Math.min(1000, tgtDist - (weapon.range * 0.9)); // TODO max dist based on speed
+		var dist = Math.min(LcMath.maxDist(speed), tgtDist - (weapon.range * 0.9));
 
 		moveToX = LcMath.bound(x + Math.cos(dir) * dist, Character.RADIUS, Main.canvas.width - Character.RADIUS);
 		moveToY = LcMath.bound(y + Math.sin(dir) * dist, Character.RADIUS, Main.canvas.height - Character.RADIUS);
