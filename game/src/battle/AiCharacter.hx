@@ -48,8 +48,10 @@ abstract class AiCharacter extends Character {
 		return id == endTurn;
 	}
 
+	@:native("cht")
 	abstract function chooseTarget(chars:Array<Character>):Character;
 
+	@:native("fcl")
 	private function findClosest(f:Character, chars:Array<Character>):Character {
 		var c:Character = null;
 		var d:Float = 0;

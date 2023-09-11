@@ -61,6 +61,7 @@ class BattleState extends State {
 		drawCharacters = characters.copy();
 	}
 
+	@:native("cer")
 	private function chooseEnemyRange(val:Int) {
 		for (r in enemyRanges) {
 			if (val < r[0]) {
@@ -124,7 +125,7 @@ class BattleState extends State {
 		}
 	}
 
-	function renderCharacterHud(xAcc:Float, c:Character) {
+	private inline function renderCharacterHud(xAcc:Float, c:Character) {
 		Main.context.fillStyle = "#fff";
 		Main.context.strokeStyle = "#000";
 

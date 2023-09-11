@@ -50,6 +50,7 @@ abstract class Character {
 		lastGuard = guard;
 	}
 
+	@:native("u")
 	public function update(s:Float) {
 		var gdif = lastGuard - guard;
 		var lgIncr = (gdif > 0 ? -GUARD_SLIP_SPEED : GUARD_SLIP_SPEED) * s;
@@ -73,6 +74,7 @@ abstract class Character {
 		}
 	}
 
+	@:native("ut")
 	public function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
 		if (guardTurn > -1 && id > guardTurn) {
 			guard = Math.max(maxGuard, guard + maxGuard / 2);
@@ -95,6 +97,7 @@ abstract class Character {
 		return health > 0;
 	}
 
+	@:native("da")
 	private function doAttack(dir:Float, chars:Array<Character>):Bool {
 		var h = false;
 		for (c in chars) {
@@ -110,7 +113,7 @@ abstract class Character {
 		return h;
 	}
 
-	public function setSprite(spr:ImageElement, ox:Float, oy:Float) {
+	public inline function setSprite(spr:ImageElement, ox:Float, oy:Float) {
 		this.sprite = spr;
 		this.offsetX = ox;
 		this.offsetY = oy;
