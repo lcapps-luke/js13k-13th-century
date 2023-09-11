@@ -1,11 +1,11 @@
 package battle;
 
+import Types.Stats;
 import resource.Images;
 
 class WolfCharacter extends AiCharacter {
-	public function new() {
-		super(Character.TEAM_BANDIT, 50, 1, 5, new WolfClaws());
-		attack = 50;
+	public function new(stats:Stats) {
+		super(Character.TEAM_BANDIT, new WolfClaws(), stats);
 		setSprite(Images.randomMan(), -12, -72);
 	}
 

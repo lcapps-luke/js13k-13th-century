@@ -1,6 +1,6 @@
 package map;
 
-import map.Map.Location;
+import Types.Location;
 import ui.Button;
 
 class MapStateMenu extends State {

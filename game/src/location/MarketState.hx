@@ -1,5 +1,6 @@
 package location;
 
+import Types.Location;
 import map.Map;
 import ui.Button;
 import ui.Number;

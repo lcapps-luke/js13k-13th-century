@@ -1,5 +1,6 @@
 package location;
 
+import Types.Location;
 import map.Map;
 import ui.Button;
 
@@ -29,6 +30,13 @@ class PubState extends State {
 		i.enable(!l.info && Inventory.pence >= INFO_COST);
 		width = i.w;
 		options.push(i);
+
+		var g = new Button("Hire Guard");
+		g.onClick = function() {
+			Main.setState(new GuardState(l));
+		}
+		width += g.w;
+		options.push(g);
 
 		var o = new Button("Leave");
 		o.onClick = function() {

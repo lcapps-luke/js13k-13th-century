@@ -1,5 +1,7 @@
 package map;
 
+import Types.Location;
+import Types.Route;
 import resource.ResourceBuilder;
 
 class Map {
@@ -131,22 +133,3 @@ class Map {
 		}
 	}
 }
-
-typedef Location = {
-	var name:String;
-	var x:Float;
-	var y:Float;
-	var type:Int;
-	var known:Bool;
-	var demand:Array<Float>;
-	var qty:Array<Int>;
-	var high:Int;
-	var low:Int;
-	var info:Bool;
-};
-
-typedef Route = {
-	var a:Location;
-	var b:Location;
-	var danger:Float;
-};

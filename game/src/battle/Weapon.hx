@@ -1,7 +1,5 @@
 package battle;
 
-import js.lib.Math;
-
 abstract class Weapon {
 	public var range(default, null):Float;
 

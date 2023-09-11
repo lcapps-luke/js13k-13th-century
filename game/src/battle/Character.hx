@@ -1,5 +1,6 @@
 package battle;
 
+import Types.Stats;
 import js.html.svg.ImageElement;
 
 abstract class Character {
@@ -7,7 +8,7 @@ abstract class Character {
 	private static inline var WALK_CYCLE_SPEED = 10;
 	private static inline var WALK_CYCLE_OFFSET = 5;
 
-	public static inline var GUARD_SLIP_SPEED:Float = 50;
+	public static inline var GUARD_SLIP_SPEED:Float = .5;
 	public static inline var TEAM_PLAYER:Int = 0;
 	public static inline var TEAM_BANDIT:Int = 1;
 	public static inline var RADIUS:Float = 15;
@@ -21,7 +22,7 @@ abstract class Character {
 	public var health(default, null):Int;
 
 	private var guardTurn:Int = -1;
-	private var attack:Float = 100;
+	private var attack:Float;
 
 	private var weapon:Weapon;
 
@@ -36,14 +37,17 @@ abstract class Character {
 	private var walkCycle:Float = 0;
 	private var moving:Bool = false;
 
-	public function new(team:Int, guard:Float, health:Int, speed:Float, weapon:Weapon) {
+	public function new(team:Int, weapon:Weapon, stats:Stats) {
 		this.team = team;
-		maxGuard = guard;
-		this.guard = guard;
-		lastGuard = guard;
-		this.health = health;
-		this.speed = speed;
 		this.weapon = weapon;
+
+		this.guard = stats.guard;
+		this.health = stats.health;
+		this.speed = stats.speed;
+		this.attack = stats.attack;
+
+		maxGuard = guard;
+		lastGuard = guard;
 	}
 
 	public function update(s:Float) {
@@ -78,9 +82,9 @@ abstract class Character {
 		return true;
 	}
 
-	public function hit(dmg:Float) {
+	public function hit(atk:Float) {
 		if (guard > 0) {
-			guard = Math.max(0, guard - dmg);
+			guard = Math.max(0, guard - atk / 2);
 		}
 		else {
 			health--;

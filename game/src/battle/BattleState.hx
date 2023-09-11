@@ -9,6 +9,17 @@ class BattleState extends State {
 	public static inline var OVER_WIN:Int = 1;
 	public static inline var OVER_LOSE:Int = 2;
 
+	private static var enemyRanges = [
+		[300, 1, 0],
+		[800, 2, 0],
+		[1500, 3, 0],
+		[2000, 1, 2],
+		[3000, 1, 4],
+		[5000, 2, 2],
+		[8000, 2, 4],
+		[10000, 3, 4]
+	];
+
 	private var mapState:MapState;
 
 	private var characters = new Array<Character>();
@@ -23,32 +34,45 @@ class BattleState extends State {
 		bg = "#7C4F30";
 		this.mapState = mapState;
 
-		// TODO populate chars
+		// populate chars
 		var c:Character = new PlayerCharacter();
 		c.x = Main.canvas.width * 0.25;
 		c.y = Main.canvas.height * 0.25;
 		characters.push(c);
 
-		var c:Character = new GuardCharacter();
-		c.x = Main.canvas.width * 0.25;
-		c.y = Main.canvas.height * 0.75;
-		characters.push(c);
-
-		for (i in 0...3) {
-			c = new WolfCharacter();
-			c.x = Main.canvas.width * 0.75;
-			c.y = Main.canvas.height * (0.25 + 0.25 * i);
+		if (Inventory.guard != null) {
+			var c:Character = new GuardCharacter(Inventory.guard);
+			c.x = Main.canvas.width * 0.25;
+			c.y = Main.canvas.height * 0.75;
 			characters.push(c);
 		}
 
-		// TODO sort chars
+		// populate enemies based on wealth
+		var eRange = chooseEnemyRange(Inventory.pence + Inventory.getStoreValue());
+		var yS = 1 / (eRange[1] + 1);
+		for (i in 0...eRange[1]) {
+			c = new WolfCharacter(LcMath.makeStats(eRange[2]));
+			c.x = Main.canvas.width * 0.75;
+			c.y = Main.canvas.height * (yS * (i + 1));
+			characters.push(c);
+		}
 
+		characters.sort((a, b) -> Math.round(b.speed - a.speed));
 		drawCharacters = characters.copy();
+	}
+
+	private function chooseEnemyRange(val:Int) {
+		for (r in enemyRanges) {
+			if (val < r[0]) {
+				return r;
+			}
+		}
+		return enemyRanges[enemyRanges.length - 1];
 	}
 
 	override function update(s:Float) {
 		super.update(s);
-		// TODO draw bg
+		// draw bg
 		Main.context.drawImage(Images.road, 0, 0);
 
 		// draw characters

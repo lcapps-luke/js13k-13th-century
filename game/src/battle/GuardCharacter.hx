@@ -1,13 +1,13 @@
 package battle;
 
-import resource.Images;
+import Types.Guard;
 
 class GuardCharacter extends AiCharacter {
-	override public function new() {
-		super(Character.TEAM_PLAYER, Inventory.playerGuard, Inventory.health, Inventory.speed, new WeaponKnife());
-		name = "Guard";
+	override public function new(g:Guard) {
+		super(Character.TEAM_PLAYER, g.weapon, g.stats);
+		name = g.name;
 
-		setSprite(Images.randomMan(), -12, -72);
+		setSprite(g.sprite, -12, -72);
 	}
 
 	function chooseTarget(chars:Array<Character>):Character {

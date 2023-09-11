@@ -11,7 +11,7 @@ class PlayerCharacter extends Character {
 	private var aimDir:Float = 0;
 
 	override public function new() {
-		super(Character.TEAM_PLAYER, Inventory.playerGuard, Inventory.health, Inventory.speed, new WeaponKnife());
+		super(Character.TEAM_PLAYER, new WeaponKnife(), Inventory.stats);
 		name = "You";
 		setSprite(Images.manList[0], -12, -72);
 	}
