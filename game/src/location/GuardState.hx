@@ -2,7 +2,7 @@ package location;
 
 import Types.Guard;
 import Types.Location;
-import battle.WeaponKnife;
+import battle.Sword;
 import resource.Images;
 import ui.Button;
 
@@ -27,7 +27,7 @@ class GuardState extends State {
 
 			var guard:Guard = {
 				sprite: spr,
-				weapon: new WeaponKnife(),
+				weapon: new Sword(),
 				stats: stats,
 				name: name
 			};
@@ -62,19 +62,19 @@ class GuardState extends State {
 
 		var yAcc = 200;
 		for (g in opt) {
-			// TODO image
+			// image
 			Main.context.drawImage(g.guard.sprite, Main.canvas.width * .3 + 30, yAcc);
 
-			// TODO name
+			// name
 			Main.context.fillText(g.guard.name, Main.canvas.width * .3, yAcc + 100);
 
-			// TODO stats
+			// stats
 			Main.context.fillText('Health: ${g.guard.stats.health}', Main.canvas.width * .5, yAcc + 20);
 			Main.context.fillText('Guard: ${g.guard.stats.guard}', Main.canvas.width * .5, yAcc + 50);
 			Main.context.fillText('Speed: ${g.guard.stats.speed}', Main.canvas.width * .5, yAcc + 80);
 			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.canvas.width * .5, yAcc + 110);
 
-			// TODO hire button
+			// hire button
 			g.hire.x = Main.canvas.width * .7;
 			g.hire.y = yAcc + 50 - g.hire.h / 2;
 			g.hire.update();

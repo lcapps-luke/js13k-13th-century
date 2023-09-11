@@ -1,6 +1,6 @@
 package battle;
 
-class WeaponKnife extends ConeWeapon {
+class Sword extends ConeWeapon {
 	public function new() {
 		this.range = 150;
 	}
