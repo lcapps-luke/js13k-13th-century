@@ -20,56 +20,7 @@ import js.html.URL;
 class EditorMain {
 	private static inline var SCALE = 3.6;
 	private static var RESOURCE(default, null) = ["🌾", "🐟", "🧀", "🧂", "🧶", "🧱"];
-	private static var RESOURCE_RANDOM(default, null) = [
-		"🌾" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
-			}
-		},
-		"🐟" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (loc + 1) * 0.9) + 0.1);
-			}
-		},
-		"🧀" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
-			}
-		},
-		"🧂" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
-			}
-		},
-		"🧶" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
-			}
-		},
-		"🧱" => {
-			min: function(loc:Float) {
-				return Math.max(0.1, (0.1 + (-loc + 1) * 0.9) - 0.1);
-			},
-			max: function(loc:Float) {
-				return Math.min(2, (0.1 + (-loc + 1) * 0.9) + 0.1);
-			}
-		},
-	];
+	private static var RESOURCE_LOC(default, null) = [0.5, -1, 0, 0.8, 0.7, 1];
 
 	public static var canvas(default, null):CanvasElement;
 	public static var context(default, null):CanvasRenderingContext2D;
@@ -160,8 +111,22 @@ class EditorMain {
 			context.fillText(txt, Math.round(l.x - w / 2), Math.round(l.y - 10));
 		}
 
-		context.strokeStyle = "2px solid #FF0000";
 		for (r in routes) {
+			context.strokeStyle = r.highlight ? "#FF0" : "#F00";
+			if (!r.highlight) {
+				context.globalAlpha = r.danger;
+			}
+			context.lineWidth = 5;
+
+			context.beginPath();
+			context.moveTo(r.a.x, r.a.y);
+			context.lineTo(r.b.x, r.b.y);
+			context.stroke();
+
+			context.lineWidth = 1;
+			context.globalAlpha = 1;
+
+			context.strokeStyle = "#000";
 			context.beginPath();
 			context.moveTo(r.a.x, r.a.y);
 			context.lineTo(r.b.x, r.b.y);
@@ -243,6 +208,15 @@ class EditorMain {
 				}
 			}
 		}
+		if (mode.value == "select-route") {
+			for (r in routes) {
+				if (r.highlight) {
+					selectedRoute = r;
+					showOptions(false, true);
+					break;
+				}
+			}
+		}
 	}
 
 	private static function makeDemandMap():DynamicAccess<Float> {
@@ -258,8 +232,27 @@ class EditorMain {
 		mouseX = e.pageX;
 		mouseY = e.pageY;
 
-		for (l in locations) {
-			l.highlight = Math.sqrt(Math.pow(mouseX - l.x, 2) + Math.pow(mouseY - l.y, 2)) < 10;
+		if (mode.value == "select-location") {
+			for (l in locations) {
+				l.highlight = Math.sqrt(Math.pow(mouseX - l.x, 2) + Math.pow(mouseY - l.y, 2)) < 10;
+			}
+		}
+		if (mode.value == "select-route") {
+			var dist = -1.0;
+			var sel:Route = null;
+			for (r in routes) {
+				r.highlight = false;
+
+				var midX = r.a.x + (r.b.x - r.a.x) / 2;
+				var midY = r.a.y + (r.b.y - r.a.y) / 2;
+				var d = Math.sqrt(Math.pow(mouseX - midX, 2) + Math.pow(mouseY - midY, 2));
+
+				if (sel == null || d < dist) {
+					dist = d;
+					sel = r;
+				}
+			}
+			sel.highlight = true;
 		}
 	}
 
@@ -267,7 +260,8 @@ class EditorMain {
 		routes.push({
 			a: a,
 			b: b,
-			danger: 0
+			danger: 0,
+			highlight: false
 		});
 	}
 
@@ -350,7 +344,8 @@ class EditorMain {
 			routes.push({
 				a: locations[r.a],
 				b: locations[r.b],
-				danger: r.danger
+				danger: r.danger,
+				highlight: false
 			});
 		}
 	}
@@ -381,13 +376,29 @@ class EditorMain {
 		var locJit = Math.random() * 0.4 - 0.2;
 		locationType = Math.min(Math.max(locationType + locJit, -1), 1);
 
-		for (r in RESOURCE) {
-			var min = RESOURCE_RANDOM[r].min(locationType);
-			var max = RESOURCE_RANDOM[r].max(locationType);
-			var res = min + Math.random() * (max - min);
-			trace('$r: min $min, max $max | $res');
+		var resList = new Array<ResRand>();
 
-			selectedLocation.demand[r] = res;
+		for (i in 0...RESOURCE.length) {
+			var res = RESOURCE[i];
+			var loc = RESOURCE_LOC[i];
+			var dis = Math.abs(loc - locationType) / 2; // 0 to 1
+
+			resList.push({
+				typeIdx: i,
+				dist: dis
+			});
+		}
+
+		resList.sort((a, b) -> Math.round(b.dist - a.dist));
+
+		var max = 2.0;
+		var min = 1.0;
+		for (r in resList) {
+			var demand = min + Math.random() * (max - min);
+			selectedLocation.demand[RESOURCE[r.typeIdx]] = demand;
+
+			max = max * 0.8;
+			min = min * 0.7;
 		}
 
 		showOptions(true, false);
@@ -407,4 +418,10 @@ typedef Route = {
 	var a:Location;
 	var b:Location;
 	var danger:Float;
+	var highlight:Bool;
 };
+
+typedef ResRand = {
+	var typeIdx:Int;
+	var dist:Float;
+}
