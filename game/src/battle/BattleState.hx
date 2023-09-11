@@ -51,7 +51,7 @@ class BattleState extends State {
 		var eRange = chooseEnemyRange(Inventory.pence + Inventory.getStoreValue());
 		var yS = 1 / (eRange[1] + 1);
 		for (i in 0...eRange[1]) {
-			c = new BanditCharacter(LcMath.makeStats(eRange[2]), new Sword());
+			c = new BanditCharacter(LcMath.makeStats(eRange[2]), LcMath.randomWeapon());
 			c.x = Main.canvas.width * 0.75;
 			c.y = Main.canvas.height * (yS * (i + 1));
 			characters.push(c);

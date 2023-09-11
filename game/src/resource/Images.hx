@@ -13,6 +13,13 @@ class Images {
 	@:native("n")
 	public static var manList:Array<ImageElement> = [];
 
+	@:native("sw")
+	public static var sword:ImageElement;
+	@:native("pw")
+	public static var pike:ImageElement;
+	@:native("bw")
+	public static var bow:ImageElement;
+
 	@:native("q")
 	private static var qty = 0;
 
@@ -34,6 +41,9 @@ class Images {
 
 		map = loadImage(ResourceBuilder.buildImage("map.svg"));
 		road = loadImage(ResourceBuilder.buildImage("road.svg"));
+		sword = loadImage(ResourceBuilder.buildImage("sword.svg"));
+		pike = loadImage(ResourceBuilder.buildImage("pike.svg"));
+		bow = loadImage(ResourceBuilder.buildImage("bow.svg"));
 
 		var manStr = ResourceBuilder.buildImage("man.svg");
 		for (h in manHairColours) {

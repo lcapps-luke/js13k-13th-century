@@ -12,6 +12,8 @@ abstract class Character {
 	public static inline var TEAM_PLAYER:Int = 0;
 	public static inline var TEAM_BANDIT:Int = 1;
 	public static inline var RADIUS:Float = 15;
+	public static inline var SPRITE_OFFSET_X:Float = -12;
+	public static inline var SPRITE_OFFSET_Y:Float = -72;
 
 	public var team(default, null):Int;
 	public var speed(default, null):Float;
@@ -32,8 +34,6 @@ abstract class Character {
 	public var name:String = "Unknown";
 
 	private var sprite:ImageElement = null;
-	private var offsetX:Float = 0;
-	private var offsetY:Float = 0;
 	private var walkCycle:Float = 0;
 	private var moving:Bool = false;
 
@@ -63,21 +63,21 @@ abstract class Character {
 		Main.context.fill();
 		Main.context.globalAlpha = 1;
 
-		if (sprite != null) {
-			if (moving) {
-				walkCycle += WALK_CYCLE_SPEED * s;
-			}
-			else {
-				walkCycle = 0;
-			}
-			Main.context.drawImage(sprite, x + offsetX, y + offsetY + -Math.abs(Math.sin(walkCycle)) * WALK_CYCLE_OFFSET);
+		if (moving) {
+			walkCycle += WALK_CYCLE_SPEED * s;
 		}
+		else {
+			walkCycle = 0;
+		}
+		var walkY = -Math.abs(Math.sin(walkCycle)) * WALK_CYCLE_OFFSET;
+		Main.context.drawImage(sprite, x + SPRITE_OFFSET_X, y + SPRITE_OFFSET_Y + walkY);
+		weapon.draw(x, y + walkY);
 	}
 
 	@:native("ut")
 	public function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
 		if (guardTurn > -1 && id > guardTurn) {
-			guard = Math.max(maxGuard, guard + maxGuard / 2);
+			guard = Math.min(maxGuard, guard + maxGuard / 2);
 			guardTurn = -1;
 		}
 
@@ -113,9 +113,7 @@ abstract class Character {
 		return h;
 	}
 
-	public inline function setSprite(spr:ImageElement, ox:Float, oy:Float) {
+	public inline function setSprite(spr:ImageElement) {
 		this.sprite = spr;
-		this.offsetX = ox;
-		this.offsetY = oy;
 	}
 }

@@ -6,7 +6,7 @@ import resource.Images;
 class BanditCharacter extends AiCharacter {
 	public function new(stats:Stats, weapon:Weapon) {
 		super(Character.TEAM_BANDIT, weapon, stats);
-		setSprite(Images.randomMan(), -12, -72);
+		setSprite(Images.randomMan());
 	}
 
 	function chooseTarget(chars:Array<Character>):Character {

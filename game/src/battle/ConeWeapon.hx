@@ -1,7 +1,7 @@
 package battle;
 
 class ConeWeapon extends Weapon {
-	private var angle:Float = (Math.PI / 180) * 20;
+	private var angle:Float = (Math.PI / 180) * 30;
 
 	public function willHit(x:Float, y:Float, dir:Float, char:Character):Bool {
 		if (LcMath.dist(x, y, char.x, char.y) > range) {

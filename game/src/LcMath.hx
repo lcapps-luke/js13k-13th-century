@@ -1,6 +1,10 @@
 package;
 
 import Types.Stats;
+import battle.Bow;
+import battle.Pike;
+import battle.Sword;
+import battle.Weapon;
 
 class LcMath {
 	public static inline function dist(ax:Float, ay:Float, bx:Float, by:Float) {
@@ -13,6 +17,16 @@ class LcMath {
 
 	public static inline function capAngle(a:Float):Float {
 		return a < 0 ? (a + Math.PI * 2) : (a > Math.PI * 2 ? a - Math.PI * 2 : a);
+	}
+
+	public static function findNearestPointOnLine(px:Float, py:Float, ax:Float, ay:Float, bx:Float, by:Float) {
+		var atob = {x: bx - ax, y: by - ay};
+		var atop = {x: px - ax, y: py - ay};
+		var len = (atob.x * atob.x) + (atob.y * atob.y);
+		var dot = (atop.x * atob.x) + (atop.y * atob.y);
+		var t = Math.min(1, Math.max(0, dot / len));
+
+		return {x: ax + (atob.x * t), y: ay + (atob.y * t)};
 	}
 
 	public static function makeStats(extra:Int) {
@@ -37,5 +51,14 @@ class LcMath {
 		}
 
 		return res;
+	}
+
+	public static function randomWeapon():Weapon {
+		var i = Math.floor(Math.random() * 3);
+		return switch (i) {
+			case 0: new Sword();
+			case 1: new Pike();
+			default: new Bow();
+		}
 	}
 }

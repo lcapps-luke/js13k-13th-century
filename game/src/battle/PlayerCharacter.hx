@@ -13,7 +13,7 @@ class PlayerCharacter extends Character {
 	override public function new() {
 		super(Character.TEAM_PLAYER, new Sword(), Inventory.stats);
 		name = "You";
-		setSprite(Images.manList[0], -12, -72);
+		setSprite(Images.manList[0]);
 	}
 
 	override function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
@@ -64,6 +64,13 @@ class PlayerCharacter extends Character {
 		Main.context.moveTo(x, y);
 		Main.context.lineTo(mx, my);
 		Main.context.stroke();
+
+		Main.context.strokeStyle = "#ff0";
+		Main.context.lineWidth = 2;
+		Main.context.beginPath();
+		Main.context.ellipse(mx, my, weapon.range, weapon.range, 0, 0, Math.PI * 2);
+		Main.context.stroke();
+
 		Main.context.setLineDash([]);
 
 		Main.context.strokeStyle = validMove ? "#ff0" : "#f00";
@@ -80,6 +87,7 @@ class PlayerCharacter extends Character {
 				if (e.isAlive() && e.team != team) {
 					if (weapon.willHit(mx, my, aimDir, e)) {
 						Main.context.strokeStyle = "#ff0";
+						Main.context.lineWidth = 4;
 						Main.context.beginPath();
 						Main.context.ellipse(e.x, e.y, Character.RADIUS * 1.2, Character.RADIUS * 1.2, 0, 0, Math.PI * 2);
 						Main.context.stroke();

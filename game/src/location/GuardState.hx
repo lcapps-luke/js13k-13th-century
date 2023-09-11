@@ -2,6 +2,8 @@ package location;
 
 import Types.Guard;
 import Types.Location;
+import battle.Character;
+import battle.Pike;
 import battle.Sword;
 import resource.Images;
 import ui.Button;
@@ -27,7 +29,7 @@ class GuardState extends State {
 
 			var guard:Guard = {
 				sprite: spr,
-				weapon: new Sword(),
+				weapon: LcMath.randomWeapon(),
 				stats: stats,
 				name: name
 			};
@@ -64,6 +66,7 @@ class GuardState extends State {
 		for (g in opt) {
 			// image
 			Main.context.drawImage(g.guard.sprite, Main.canvas.width * .3 + 30, yAcc);
+			g.guard.weapon.draw(Main.canvas.width * .3 + 30 - Character.SPRITE_OFFSET_X, yAcc - Character.SPRITE_OFFSET_Y);
 
 			// name
 			Main.context.fillText(g.guard.name, Main.canvas.width * .3, yAcc + 100);

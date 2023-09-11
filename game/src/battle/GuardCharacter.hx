@@ -7,7 +7,7 @@ class GuardCharacter extends AiCharacter {
 		super(Character.TEAM_PLAYER, g.weapon, g.stats);
 		name = g.name;
 
-		setSprite(g.sprite, -12, -72);
+		setSprite(g.sprite);
 	}
 
 	function chooseTarget(chars:Array<Character>):Character {
