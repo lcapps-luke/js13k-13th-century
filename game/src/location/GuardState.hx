@@ -65,8 +65,9 @@ class GuardState extends State {
 		var yAcc = 200;
 		for (g in opt) {
 			// image
-			Main.context.drawImage(g.guard.sprite, Main.canvas.width * .3 + 30, yAcc);
-			g.guard.weapon.draw(Main.canvas.width * .3 + 30 - Character.SPRITE_OFFSET_X, yAcc - Character.SPRITE_OFFSET_Y);
+			var ix = Main.canvas.width * .3 + 30;
+			Main.context.drawImage(g.guard.sprite, ix, yAcc);
+			g.guard.weapon.draw(ix - Character.SPRITE_OFFSET_X, yAcc - Character.SPRITE_OFFSET_Y);
 
 			// name
 			Main.context.fillText(g.guard.name, Main.canvas.width * .3, yAcc + 100);

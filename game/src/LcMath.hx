@@ -61,4 +61,12 @@ class LcMath {
 			default: new Bow();
 		}
 	}
+
+	public static inline function bound(val:Float, min:Float, max:Float) {
+		return Math.min(Math.max(val, min), max);
+	}
+
+	public static inline function maxDist(speed:Float) {
+		return 200 + speed * 100;
+	}
 }

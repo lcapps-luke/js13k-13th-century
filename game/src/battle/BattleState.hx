@@ -9,6 +9,7 @@ class BattleState extends State {
 	public static inline var OVER_WIN:Int = 1;
 	public static inline var OVER_LOSE:Int = 2;
 
+	// wealth limit, enemy qty, enemy level
 	private static var enemyRanges = [
 		[300, 1, 0],
 		[800, 2, 0],

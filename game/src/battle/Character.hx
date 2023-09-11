@@ -77,7 +77,7 @@ abstract class Character {
 	@:native("ut")
 	public function updateTurn(s:Float, id:Int, chars:Array<Character>):Bool {
 		if (guardTurn > -1 && id > guardTurn) {
-			guard = Math.min(maxGuard, guard + maxGuard / 2);
+			guard = Math.min(maxGuard, guard + maxGuard / 4);
 			guardTurn = -1;
 		}
 
@@ -86,7 +86,7 @@ abstract class Character {
 
 	public function hit(atk:Float) {
 		if (guard > 0) {
-			guard = Math.max(0, guard - atk / 2);
+			guard = Math.max(0, guard - atk);
 		}
 		else {
 			health--;

@@ -7,7 +7,7 @@ import resource.ResourceBuilder;
 class Map {
 	public static inline var PX_TO_MILES = 2.5;
 	public static inline var TRAVEL_SPEED = 5;
-	public static inline var TRAVEL_HOURS_PER_DAY = 14;
+	public static inline var TRAVEL_HOURS_PER_DAY = 10;
 	public static inline var TYPE_VILLAGE = 0;
 	public static inline var TYPE_TOWN = 1;
 	public static inline var TOTAL_DAYS = 30;
