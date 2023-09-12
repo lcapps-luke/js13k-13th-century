@@ -80,7 +80,7 @@ class MarketState extends State {
 			// Sell
 			l.sell.x = xPos[2];
 			l.sell.y = yAcc;
-			l.sell.update();
+			l.sell.update(s);
 
 			// Price
 			Main.context.fillText(l.priceStr, xPos[3], yAcc + txtOff);
@@ -91,7 +91,7 @@ class MarketState extends State {
 			// Buy
 			l.buy.x = xPos[5];
 			l.buy.y = yAcc;
-			l.buy.update();
+			l.buy.update(s);
 
 			// Total
 			l.total = (l.price * l.sell.val) - (l.price * l.buy.val);
@@ -110,17 +110,17 @@ class MarketState extends State {
 
 		back.x = 40;
 		back.y = yAcc;
-		back.update();
+		back.update(s);
 
 		confirm.y = yAcc;
 		confirm.x = Main.width - confirm.w - 40;
-		trace(total);
+
 		confirm.enable(Inventory.pence + total >= 0);
-		confirm.update();
+		confirm.update(s);
 
 		reset.y = yAcc;
 		reset.x = confirm.x - reset.w - 40;
-		reset.update();
+		reset.update(s);
 	}
 
 	private function onConfirm() {

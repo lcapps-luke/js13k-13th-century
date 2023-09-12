@@ -70,7 +70,7 @@ class PubState extends State {
 		Main.context.fillText('Purse: ${Inventory.pence}', 20, 40);
 
 		for (b in options) {
-			b.update();
+			b.update(s);
 		}
 	}
 }

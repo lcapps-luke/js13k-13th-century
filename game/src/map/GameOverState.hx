@@ -15,7 +15,7 @@ class GameOverState extends State {
 	override function update(s:Float) {
 		super.update(s);
 
-		retry.update();
+		retry.update(s);
 		textCenter("Game Over", Main.height / 2);
 	}
 }

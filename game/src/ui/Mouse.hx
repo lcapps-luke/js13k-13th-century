@@ -15,7 +15,6 @@ class Mouse {
 	@:native("i")
 	public static function init() {
 		Main.canvas.onmousemove = onMouseMove;
-		Main.canvas.onclick = onMouseClick;
 		Main.canvas.onmousedown = onMouseDown;
 		Main.canvas.onmouseup = onMouseUp;
 	}
@@ -30,12 +29,6 @@ class Mouse {
 		Y = (e.clientY - rect.top) * sy;
 	}
 
-	@:native("l")
-	private static inline function onMouseClick(e:MouseEvent) {
-		onMouseMove(e);
-		CLICK = true;
-	}
-
 	@:native("o")
 	private static inline function onMouseDown(e:MouseEvent) {
 		onMouseMove(e);
@@ -46,6 +39,7 @@ class Mouse {
 	private static inline function onMouseUp(e:MouseEvent) {
 		onMouseMove(e);
 		DOWN = false;
+		CLICK = true;
 	}
 
 	@:native("u")

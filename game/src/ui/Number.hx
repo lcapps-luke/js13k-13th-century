@@ -24,19 +24,21 @@ class Number {
 
 		subBtn = new Button("-", textSize);
 		subBtn.onClick = () -> this.val -= 1;
+		subBtn.clickType = Region.CLICK_TYPE_HOLD;
 
 		addBtn = new Button("+", textSize);
 		addBtn.onClick = () -> this.val += 1;
+		addBtn.clickType = Region.CLICK_TYPE_HOLD;
 
 		pad = textSize * 0.3;
 	}
 
-	public function update() {
+	public function update(s:Float) {
 		var acc = x;
 		subBtn.x = acc;
 		subBtn.y = y;
 		subBtn.enable(val > min);
-		subBtn.update();
+		subBtn.update(s);
 		acc += subBtn.w + pad;
 
 		var w = Math.max(Main.context.measureText(Std.string(min)).width, Main.context.measureText(Std.string(max)).width);
@@ -46,6 +48,6 @@ class Number {
 		addBtn.x = acc;
 		addBtn.y = y;
 		addBtn.enable(val < max);
-		addBtn.update();
+		addBtn.update(s);
 	}
 }

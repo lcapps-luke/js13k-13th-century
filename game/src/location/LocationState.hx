@@ -52,7 +52,7 @@ class LocationState extends State {
 		textCenter(l.name, Main.height / 4);
 
 		for (b in options) {
-			b.update();
+			b.update(s);
 		}
 	}
 }

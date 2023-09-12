@@ -52,7 +52,7 @@ class GuardState extends State {
 
 	override function update(s:Float) {
 		super.update(s);
-		back.update();
+		back.update(s);
 
 		Main.context.fillText('Purse: ${Inventory.pence}', 40, Main.height - 70);
 
@@ -81,7 +81,7 @@ class GuardState extends State {
 			// hire button
 			g.hire.x = Main.width * .7;
 			g.hire.y = yAcc + 50 - g.hire.h / 2;
-			g.hire.update();
+			g.hire.update(s);
 
 			yAcc += 200;
 		}

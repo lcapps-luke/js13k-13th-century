@@ -18,8 +18,8 @@ class Button extends Region {
 		h = PAD * 2 + textSize;
 	}
 
-	override function update() {
-		super.update();
+	override function update(s:Float) {
+		super.update(s);
 
 		Main.context.globalAlpha = state == Region.STATE_OVER ? 1 : 0.5;
 		Main.context.strokeStyle = COLOUR;

@@ -75,7 +75,7 @@ class MapStateMenu extends State {
 		}
 
 		for (b in options) {
-			b.update();
+			b.update(s);
 		}
 	}
 }

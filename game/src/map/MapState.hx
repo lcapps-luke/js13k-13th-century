@@ -152,7 +152,7 @@ class MapState extends State {
 		if (dr < 1) {
 			Main.context.fillStyle = "#000a";
 			Main.context.fillRect(reportButton.x - 20, reportButton.y - 20, reportButton.w + 40, reportButton.h + 40);
-			reportButton.update();
+			reportButton.update(s);
 		}
 
 		if (selectedLocation != null) {
