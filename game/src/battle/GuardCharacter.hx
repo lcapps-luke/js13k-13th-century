@@ -13,4 +13,12 @@ class GuardCharacter extends AiCharacter {
 	function chooseTarget(chars:Array<Character>):Character {
 		return findClosest(this, chars);
 	}
+
+	override function hit(atk:Float) {
+		super.hit(atk);
+
+		if (!isAlive()) {
+			Inventory.guard = null;
+		}
+	}
 }

@@ -12,14 +12,13 @@ class BattleState extends State {
 
 	// wealth limit, enemy qty, enemy level
 	private static var enemyRanges = [
-		[300, 1, 0],
-		[800, 2, 0],
-		[1500, 3, 0],
-		[2000, 1, 2],
-		[3000, 1, 4],
-		[5000, 2, 2],
-		[8000, 2, 4],
-		[10000, 3, 4]
+		[10000, 1, 0],
+		[20000, 1, 1],
+		[30000, 2, 0],
+		[40000, 2, 1],
+		[50000, 1, 3],
+		[60000, 2, 2],
+		[70000, 3, 2],
 	];
 
 	private var mapState:MapState;

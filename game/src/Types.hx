@@ -45,5 +45,7 @@ typedef Guard = {
 	var stats:Stats;
 	@:native("w")
 	var weapon:Weapon;
+	@:native("c")
+	var cost:Int;
 }
 #end

@@ -3,12 +3,12 @@ package location;
 import Types.Guard;
 import Types.Location;
 import battle.Character;
-import battle.Pike;
-import battle.Sword;
 import resource.Images;
 import ui.Button;
 
 class GuardState extends State {
+	private static var cache = new js.lib.Map<String, Array<Guard>>();
+
 	private var l:Location;
 
 	private var back = new Button("Back", 60);
@@ -22,32 +22,56 @@ class GuardState extends State {
 		back.x = Main.width - back.w - 40;
 		back.y = Main.height - back.h - 40;
 
-		for (i in 0...3) {
-			var stats = LcMath.makeStats(Math.round(4 + Math.pow(i, 2) * 4));
-			var spr = Images.randomMan();
-			var name = 'Guard ${i + 1}';
+		for (i in getGuards(l.name)) {
+			if (Inventory.guard == i) {
+				continue;
+			}
 
-			var guard:Guard = {
-				sprite: spr,
-				weapon: LcMath.randomWeapon(),
-				stats: stats,
-				name: name
-			};
-
-			var cost = 50 + 100 * i;
-			var btn = new Button('Hire (-${cost})');
-			btn.enable(cost <= Inventory.pence);
+			var btn = new Button('Hire (-${i.cost})');
+			btn.enable(i.cost <= Inventory.pence);
 			btn.onClick = function() {
-				Inventory.guard = guard;
-				Inventory.pence -= cost;
+				Inventory.guard = i;
+				Inventory.pence -= i.cost;
 				Main.setState(new PubState(l));
 			}
 
 			opt.push({
-				guard: guard,
+				guard: i,
 				hire: btn
 			});
 		}
+
+		if (Inventory.guard != null) {
+			opt.push({
+				guard: Inventory.guard,
+				hire: null
+			});
+		}
+	}
+
+	private inline function getGuards(loc:String) {
+		var res = cache.get(loc);
+		if (res == null) {
+			res = [];
+
+			for (i in 0...3) {
+				var stats = LcMath.makeStats(2 * (i + 1));
+				var spr = Images.randomMan();
+				var name = LcMath.getRandomName();
+
+				res.push({
+					sprite: spr,
+					weapon: LcMath.randomWeapon(),
+					stats: stats,
+					name: name,
+					cost: 1000 + 2000 * i
+				});
+			}
+
+			cache.set(loc, res);
+		}
+
+		return res;
 	}
 
 	override function update(s:Float) {
@@ -60,7 +84,7 @@ class GuardState extends State {
 		textCenter("Hire Guard", 80);
 
 		Main.context.font = "30px serif";
-		textCenter("Guards will join you for your next journey only", 120);
+		textCenter("You can have only one guard at a time. Hiring another will replace an existing guard", 120);
 
 		var yAcc = 200;
 		for (g in opt) {
@@ -79,11 +103,16 @@ class GuardState extends State {
 			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.width * .5, yAcc + 110);
 
 			// hire button
-			g.hire.x = Main.width * .7;
-			g.hire.y = yAcc + 50 - g.hire.h / 2;
-			g.hire.update(s);
+			if (g.hire == null) {
+				Main.context.fillText("Current Guard", Main.width * .7, yAcc + 50);
+			}
+			else {
+				g.hire.x = Main.width * .7;
+				g.hire.y = yAcc + 50 - g.hire.h / 2;
+				g.hire.update(s);
+			}
 
-			yAcc += 200;
+			yAcc += 180;
 		}
 	}
 }

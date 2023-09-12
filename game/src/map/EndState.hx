@@ -3,12 +3,12 @@ package map;
 class EndState extends State {
 	private var ranks = [
 		{w: 0, r: "F"},
-		{w: 1000, r: "E"},
-		{w: 5000, r: "D"},
-		{w: 10000, r: "C"},
-		{w: 20000, r: "B"},
-		{w: 30000, r: "A"},
-		{w: 40000, r: "S"}
+		{w: 10000, r: "E"},
+		{w: 20000, r: "D"},
+		{w: 30000, r: "C"},
+		{w: 50000, r: "B"},
+		{w: 70000, r: "A"},
+		{w: 90000, r: "S"}
 	];
 
 	private var store:Int;

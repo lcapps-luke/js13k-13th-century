@@ -54,10 +54,10 @@ class LcMath {
 	}
 
 	public static function randomWeapon():Weapon {
-		var i = Math.floor(Math.random() * 3);
+		var i = Math.floor(Math.random() * 6);
 		return switch (i) {
-			case 0: new Sword();
-			case 1: new Pike();
+			case 0 | 1 | 2: new Sword();
+			case 3 | 4: new Pike();
 			default: new Bow();
 		}
 	}
@@ -68,5 +68,12 @@ class LcMath {
 
 	public static inline function maxDist(speed:Float) {
 		return 200 + speed * 100;
+	}
+
+	public static inline function getRandomName() {
+		return [
+			"Willelmus", "Ricardus", "Iohannes", "Robertus", "Hugo", "Rogerus", "Walterus", "Thomas", "Radulfus", "Galfridus", "Henricus", "Adam", "Petrus",
+			"Symon", "Nicholaus", "Alanus", "Stephanus"
+		][Math.floor(Math.random() * 17)];
 	}
 }
