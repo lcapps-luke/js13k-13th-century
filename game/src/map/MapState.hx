@@ -6,6 +6,7 @@ import location.LocationState;
 import map.Map;
 import map.MapStateMenu.MapMenuResult;
 import resource.Images;
+import resource.Sound;
 import ui.Button;
 import ui.Mouse;
 
@@ -113,6 +114,7 @@ class MapState extends State {
 
 				if (Mouse.CLICK) {
 					selectedLocation = l;
+					Sound.select();
 				}
 			}
 		}

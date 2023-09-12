@@ -1,5 +1,7 @@
 package ui;
 
+import resource.Sound;
+
 class Region {
 	public static inline var CLICK_TYPE_RELEASE = 0;
 	public static inline var CLICK_TYPE_HOLD = 1;
@@ -42,17 +44,20 @@ class Region {
 		if (clickType == CLICK_TYPE_RELEASE) {
 			if (Mouse.CLICK && onClick != null) {
 				onClick();
+				Sound.blip();
 			}
 		}
 		else {
 			if (state != STATE_DOWN && Mouse.DOWN) {
 				onClick();
+				Sound.blip();
 			}
 
 			if (state == STATE_DOWN) {
 				holdTimer -= s;
 				if (holdTimer < 0) {
 					onClick();
+					Sound.blip();
 					holdTimer = HOLD_CLICK_TIME;
 				}
 			}

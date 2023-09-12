@@ -3,6 +3,7 @@ package battle;
 import map.GameOverState;
 import map.MapState;
 import resource.Images;
+import resource.Sound;
 
 class BattleState extends State {
 	public static inline var TURN_HUD_WIDTH:Float = 250;
@@ -32,6 +33,7 @@ class BattleState extends State {
 
 	public function new(mapState:MapState) {
 		super();
+		Sound.fight();
 		bg = "#7C4F30";
 		this.mapState = mapState;
 

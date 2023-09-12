@@ -2,6 +2,7 @@ package battle;
 
 import Types.Stats;
 import js.html.svg.ImageElement;
+import resource.Sound;
 
 abstract class Character {
 	private static inline var MOVE_SPEED:Float = 300;
@@ -65,11 +66,15 @@ abstract class Character {
 
 		if (moving) {
 			walkCycle += WALK_CYCLE_SPEED * s;
+			if (walkCycle > Math.PI) {
+				walkCycle = 0;
+				Sound.step();
+			}
 		}
 		else {
 			walkCycle = 0;
 		}
-		var walkY = -Math.abs(Math.sin(walkCycle)) * WALK_CYCLE_OFFSET;
+		var walkY = -Math.sin(walkCycle) * WALK_CYCLE_OFFSET;
 		Main.context.drawImage(sprite, x + SPRITE_OFFSET_X, y + SPRITE_OFFSET_Y + walkY);
 		weapon.draw(x, y + walkY);
 	}
@@ -91,6 +96,10 @@ abstract class Character {
 		else {
 			health--;
 		}
+
+		if (!isAlive()) {
+			Sound.die();
+		}
 	}
 
 	public inline function isAlive():Bool {
@@ -110,6 +119,11 @@ abstract class Character {
 				h = true;
 			}
 		}
+
+		if (h) {
+			Sound.hit();
+		}
+
 		return h;
 	}
 
