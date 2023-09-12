@@ -55,6 +55,7 @@ class BattleState extends State {
 		var yS = 1 / (eRange[1] + 1);
 		for (i in 0...eRange[1]) {
 			c = new BanditCharacter(LcMath.makeStats(eRange[2]), LcMath.randomWeapon());
+			c.name = 'Bandit ${i + 1}';
 			c.x = Main.width * 0.75;
 			c.y = Main.height * (yS * (i + 1));
 			characters.push(c);
@@ -114,11 +115,11 @@ class BattleState extends State {
 		}
 
 		// draw turn order
-		var xAcc:Float = 0;
+		var xAcc:Float = 10;
 		for (c in characters) {
 			if (c.isAlive()) {
 				renderCharacterHud(xAcc, c);
-				xAcc += TURN_HUD_WIDTH;
+				xAcc += TURN_HUD_WIDTH + 10;
 			}
 
 			if (xAcc > Main.width) {

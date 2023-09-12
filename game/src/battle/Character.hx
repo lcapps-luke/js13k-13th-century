@@ -32,7 +32,7 @@ abstract class Character {
 	public var x:Float;
 	public var y:Float;
 
-	public var name:String = "Unknown";
+	public var name:String = "";
 
 	private var sprite:ImageElement = null;
 	private var walkCycle:Float = 0;
