@@ -20,7 +20,7 @@ class MarketState extends State {
 		this.l = l;
 
 		for (p in [0, .14, .28, .42, .60, .73, .90]) {
-			xPos.push(Main.canvas.width * p);
+			xPos.push(Main.width * p);
 		}
 
 		for (i in 0...Map.resources.length) {
@@ -64,7 +64,7 @@ class MarketState extends State {
 		Main.context.strokeStyle = "#fff";
 		Main.context.beginPath();
 		Main.context.moveTo(0, yAcc);
-		Main.context.lineTo(Main.canvas.width, yAcc);
+		Main.context.lineTo(Main.width, yAcc);
 		Main.context.stroke();
 		yAcc += 50;
 
@@ -104,7 +104,7 @@ class MarketState extends State {
 		Main.context.fillText('Purse: ${Inventory.pence}', 40, yAcc + txtOff);
 		var ttl = 'Grand Total: ${total}';
 		var w = Main.context.measureText(ttl).width;
-		Main.context.fillText(ttl, Main.canvas.width - w, yAcc + txtOff);
+		Main.context.fillText(ttl, Main.width - w, yAcc + txtOff);
 
 		yAcc += 100;
 
@@ -113,7 +113,7 @@ class MarketState extends State {
 		back.update();
 
 		confirm.y = yAcc;
-		confirm.x = Main.canvas.width - confirm.w - 40;
+		confirm.x = Main.width - confirm.w - 40;
 		trace(total);
 		confirm.enable(Inventory.pence + total >= 0);
 		confirm.update();

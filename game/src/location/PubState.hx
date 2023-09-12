@@ -45,9 +45,9 @@ class PubState extends State {
 		width += o.w;
 		options.push(o);
 
-		var xx = Main.canvas.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
+		var xx = Main.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
 		for (o in options) {
-			o.y = Main.canvas.height * 0.75;
+			o.y = Main.height * 0.75;
 			o.x = xx;
 			xx += o.w + MARGIN;
 		}
@@ -58,10 +58,10 @@ class PubState extends State {
 
 		Main.context.font = "80px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter('${l.name} Public House', Main.canvas.height / 4);
+		textCenter('${l.name} Public House', Main.height / 4);
 
 		Main.context.font = "40px serif";
-		var yy = Main.canvas.height / 4 + 100;
+		var yy = Main.height / 4 + 100;
 		for (i in info) {
 			textCenter(i, yy);
 			yy += 50;

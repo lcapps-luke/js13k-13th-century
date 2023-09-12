@@ -38,14 +38,14 @@ class BattleState extends State {
 
 		// populate chars
 		var c:Character = new PlayerCharacter();
-		c.x = Main.canvas.width * 0.25;
-		c.y = Main.canvas.height * 0.25;
+		c.x = Main.width * 0.25;
+		c.y = Main.height * 0.25;
 		characters.push(c);
 
 		if (Inventory.guard != null) {
 			var c:Character = new GuardCharacter(Inventory.guard);
-			c.x = Main.canvas.width * 0.25;
-			c.y = Main.canvas.height * 0.75;
+			c.x = Main.width * 0.25;
+			c.y = Main.height * 0.75;
 			characters.push(c);
 		}
 
@@ -54,8 +54,8 @@ class BattleState extends State {
 		var yS = 1 / (eRange[1] + 1);
 		for (i in 0...eRange[1]) {
 			c = new BanditCharacter(LcMath.makeStats(eRange[2]), LcMath.randomWeapon());
-			c.x = Main.canvas.width * 0.75;
-			c.y = Main.canvas.height * (yS * (i + 1));
+			c.x = Main.width * 0.75;
+			c.y = Main.height * (yS * (i + 1));
 			characters.push(c);
 		}
 
@@ -120,7 +120,7 @@ class BattleState extends State {
 				xAcc += TURN_HUD_WIDTH;
 			}
 
-			if (xAcc > Main.canvas.width) {
+			if (xAcc > Main.width) {
 				break;
 			}
 		}

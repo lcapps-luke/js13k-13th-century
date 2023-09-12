@@ -19,8 +19,8 @@ class GuardState extends State {
 		this.l = l;
 
 		back.onClick = () -> Main.setState(new PubState(l));
-		back.x = Main.canvas.width - back.w - 40;
-		back.y = Main.canvas.height - back.h - 40;
+		back.x = Main.width - back.w - 40;
+		back.y = Main.height - back.h - 40;
 
 		for (i in 0...3) {
 			var stats = LcMath.makeStats(Math.round(4 + Math.pow(i, 2) * 4));
@@ -54,7 +54,7 @@ class GuardState extends State {
 		super.update(s);
 		back.update();
 
-		Main.context.fillText('Purse: ${Inventory.pence}', 40, Main.canvas.height - 70);
+		Main.context.fillText('Purse: ${Inventory.pence}', 40, Main.height - 70);
 
 		Main.context.font = "80px serif";
 		textCenter("Hire Guard", 80);
@@ -65,21 +65,21 @@ class GuardState extends State {
 		var yAcc = 200;
 		for (g in opt) {
 			// image
-			var ix = Main.canvas.width * .3 + 30;
+			var ix = Main.width * .3 + 30;
 			Main.context.drawImage(g.guard.sprite, ix, yAcc);
 			g.guard.weapon.draw(ix - Character.SPRITE_OFFSET_X, yAcc - Character.SPRITE_OFFSET_Y);
 
 			// name
-			Main.context.fillText(g.guard.name, Main.canvas.width * .3, yAcc + 100);
+			Main.context.fillText(g.guard.name, Main.width * .3, yAcc + 100);
 
 			// stats
-			Main.context.fillText('Health: ${g.guard.stats.health}', Main.canvas.width * .5, yAcc + 20);
-			Main.context.fillText('Guard: ${g.guard.stats.guard}', Main.canvas.width * .5, yAcc + 50);
-			Main.context.fillText('Speed: ${g.guard.stats.speed}', Main.canvas.width * .5, yAcc + 80);
-			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.canvas.width * .5, yAcc + 110);
+			Main.context.fillText('Health: ${g.guard.stats.health}', Main.width * .5, yAcc + 20);
+			Main.context.fillText('Guard: ${g.guard.stats.guard}', Main.width * .5, yAcc + 50);
+			Main.context.fillText('Speed: ${g.guard.stats.speed}', Main.width * .5, yAcc + 80);
+			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.width * .5, yAcc + 110);
 
 			// hire button
-			g.hire.x = Main.canvas.width * .7;
+			g.hire.x = Main.width * .7;
 			g.hire.y = yAcc + 50 - g.hire.h / 2;
 			g.hire.update();
 

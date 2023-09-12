@@ -36,9 +36,9 @@ class LocationState extends State {
 		width += o.w;
 		options.push(o);
 
-		var xx = Main.canvas.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
+		var xx = Main.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
 		for (o in options) {
-			o.y = Main.canvas.height * 0.75;
+			o.y = Main.height * 0.75;
 			o.x = xx;
 			xx += o.w + MARGIN;
 		}
@@ -49,7 +49,7 @@ class LocationState extends State {
 
 		Main.context.font = "80px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter(l.name, Main.canvas.height / 4);
+		textCenter(l.name, Main.height / 4);
 
 		for (b in options) {
 			b.update();

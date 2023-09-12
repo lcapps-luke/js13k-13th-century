@@ -32,13 +32,13 @@ class EndState extends State {
 		Main.context.fillStyle = "#fff";
 
 		Main.context.font = "80px serif";
-		textCenter("Earnings Report", Main.canvas.height * 0.2);
+		textCenter("Earnings Report", Main.height * 0.2);
 
 		Main.context.font = "50px serif";
-		textCenter('Purse: ${Inventory.pence}', Main.canvas.height * 0.4);
-		textCenter('Unsold Goods: ${store}', Main.canvas.height * 0.4 + 60);
-		textCenter('Total: ${Inventory.pence + store}', Main.canvas.height * 0.4 + 120);
+		textCenter('Purse: ${Inventory.pence}', Main.height * 0.4);
+		textCenter('Unsold Goods: ${store}', Main.height * 0.4 + 60);
+		textCenter('Total: ${Inventory.pence + store}', Main.height * 0.4 + 120);
 
-		textCenter('Rank: ${rank}', Main.canvas.height * 0.4 + 240);
+		textCenter('Rank: ${rank}', Main.height * 0.4 + 240);
 	}
 }

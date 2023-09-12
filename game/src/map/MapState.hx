@@ -42,8 +42,8 @@ class MapState extends State {
 		locY = Map.currentLocation.y;
 
 		reportButton = new Button("Report Earnings", 80);
-		reportButton.x = Main.canvas.width / 2 - reportButton.w / 2;
-		reportButton.y = Main.canvas.height * 0.8 - reportButton.h / 2;
+		reportButton.x = Main.width / 2 - reportButton.w / 2;
+		reportButton.y = Main.height * 0.8 - reportButton.h / 2;
 		reportButton.onClick = () -> Main.setState(new EndState());
 	}
 
@@ -187,7 +187,7 @@ class MapState extends State {
 	}
 
 	private inline function lookAt(x:Float, y:Float) {
-		viewX = (Main.canvas.width / 2 - x * ZOOM);
-		viewY = (Main.canvas.height / 2 - y * ZOOM);
+		viewX = (Main.width / 2 - x * ZOOM);
+		viewY = (Main.height / 2 - y * ZOOM);
 	}
 }

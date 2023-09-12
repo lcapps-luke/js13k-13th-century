@@ -21,6 +21,11 @@ class Main {
 	@:native("t")
 	private static var state:State = null;
 
+	@:native("w")
+	public static var width(default, null):Float;
+	@:native("h")
+	public static var height(default, null):Float;
+
 	public static function main() {
 		canvas = cast Browser.window.document.getElementById("c");
 		context = canvas.getContext2d();
@@ -34,6 +39,9 @@ class Main {
 		});
 		Mouse.init();
 		Inventory.init();
+
+		width = canvas.width;
+		height = canvas.height;
 
 		Browser.window.requestAnimationFrame(update);
 	}

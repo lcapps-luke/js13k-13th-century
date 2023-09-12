@@ -53,9 +53,9 @@ class MapStateMenu extends State {
 		});
 		options = [tr, en, ex];
 
-		var yacc = Main.canvas.height / 2;
+		var yacc = Main.height / 2;
 		for (b in options) {
-			b.x = Main.canvas.width / 2 - b.w / 2;
+			b.x = Main.width / 2 - b.w / 2;
 			b.y = yacc;
 			yacc += b.h * 1.5;
 		}
@@ -66,12 +66,12 @@ class MapStateMenu extends State {
 
 		Main.context.font = "80px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter(l.name, Main.canvas.height / 4);
+		textCenter(l.name, Main.height / 4);
 
 		if (d > 0) {
 			Main.context.font = "40px serif";
-			textCenter('Distance: $d miles', Main.canvas.height / 4 + 100);
-			textCenter('Travel Time: $t days', Main.canvas.height / 4 + 150);
+			textCenter('Distance: $d miles', Main.height / 4 + 100);
+			textCenter('Travel Time: $t days', Main.height / 4 + 150);
 		}
 
 		for (b in options) {

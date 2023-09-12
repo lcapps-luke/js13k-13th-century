@@ -23,8 +23,8 @@ class Mouse {
 	@:native("m")
 	private static function onMouseMove(e:MouseEvent) {
 		var rect = Main.canvas.getBoundingClientRect();
-		var sx = Main.canvas.width / rect.width;
-		var sy = Main.canvas.width / rect.width;
+		var sx = Main.width / rect.width;
+		var sy = Main.width / rect.width;
 
 		X = (e.clientX - rect.left) * sx;
 		Y = (e.clientY - rect.top) * sy;
