@@ -41,7 +41,7 @@ class MapState extends State {
 		locX = Map.currentLocation.x;
 		locY = Map.currentLocation.y;
 
-		reportButton = new Button("Report Earnings", "#fff", true, 80);
+		reportButton = new Button("Report Earnings", 80);
 		reportButton.x = Main.canvas.width / 2 - reportButton.w / 2;
 		reportButton.y = Main.canvas.height * 0.8 - reportButton.h / 2;
 		reportButton.onClick = () -> Main.setState(new EndState());

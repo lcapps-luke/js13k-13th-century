@@ -11,7 +11,7 @@ import ui.Button;
 class GuardState extends State {
 	private var l:Location;
 
-	private var back = new Button("Back", "#fff", true, 60);
+	private var back = new Button("Back", 60);
 	private var opt = new Array<GuardOption>();
 
 	public function new(l:Location) {

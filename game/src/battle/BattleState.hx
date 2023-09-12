@@ -1,5 +1,6 @@
 package battle;
 
+import map.GameOverState;
 import map.MapState;
 import resource.Images;
 
@@ -107,8 +108,7 @@ class BattleState extends State {
 		else {
 			endTimer -= s;
 			if (endTimer < 0) {
-				// TODO game over if lose
-				Main.setState(mapState);
+				Main.setState(endType == OVER_WIN ? mapState : new GameOverState());
 			}
 		}
 

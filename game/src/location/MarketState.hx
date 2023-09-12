@@ -11,9 +11,9 @@ class MarketState extends State {
 	private var xPos:Array<Float> = [];
 	private var lines:Array<Line> = [];
 
-	private var confirm = new Button("Confirm", "#fff", true, 60);
-	private var reset = new Button("Reset", "#fff", true, 60);
-	private var back = new Button("Back", "#fff", true, 60);
+	private var confirm = new Button("Confirm", 60);
+	private var reset = new Button("Reset", 60);
+	private var back = new Button("Back", 60);
 
 	public function new(l:Location) {
 		super();

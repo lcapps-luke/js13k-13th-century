@@ -22,10 +22,10 @@ class Number {
 		this.min = min;
 		this.max = max;
 
-		subBtn = new Button("-", "#fff", true, textSize);
+		subBtn = new Button("-", textSize);
 		subBtn.onClick = () -> this.val -= 1;
 
-		addBtn = new Button("+", "#fff", true, textSize);
+		addBtn = new Button("+", textSize);
 		addBtn.onClick = () -> this.val += 1;
 
 		pad = textSize * 0.3;
