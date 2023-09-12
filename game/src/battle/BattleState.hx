@@ -27,6 +27,7 @@ class BattleState extends State {
 	private var characters = new Array<Character>();
 	private var drawCharacters:Array<Character>;
 	private var turn:Int = 0;
+	private var idx:Int = 0;
 
 	private var endType:Int = OVER_NOT;
 	private var endTimer:Float = 0;
@@ -91,14 +92,10 @@ class BattleState extends State {
 		// check end
 		if (endType == OVER_NOT) {
 			// update active character
-			if (characters[0].updateTurn(s, turn, characters)) {
+			if (characters[idx].updateTurn(s, turn, characters)) {
 				// move to next char if turn complete
 				turn++;
-				characters.push(characters.shift());
-
-				while (!characters[0].isAlive()) {
-					characters.push(characters.shift());
-				}
+				nextCharacterIndex();
 
 				// check end of battle
 				endType = isOver();
@@ -115,22 +112,28 @@ class BattleState extends State {
 		}
 
 		// draw turn order
-		var xAcc:Float = 10;
-		for (c in characters) {
-			if (c.isAlive()) {
-				renderCharacterHud(xAcc, c);
-				xAcc += TURN_HUD_WIDTH + 10;
-			}
+		for (i in 0...characters.length) {
+			renderCharacterHud(10 + (TURN_HUD_WIDTH + 10) * i, characters[i], i == idx);
+		}
+	}
 
-			if (xAcc > Main.width) {
-				break;
+	private inline function nextCharacterIndex() {
+		idx++;
+		if (idx >= characters.length) {
+			idx = 0;
+		}
+		while (!characters[idx].isAlive()) {
+			idx++;
+			if (idx >= characters.length) {
+				idx = 0;
 			}
 		}
 	}
 
-	private inline function renderCharacterHud(xAcc:Float, c:Character) {
+	private inline function renderCharacterHud(xAcc:Float, c:Character, current:Bool) {
+		Main.context.lineWidth = 5;
 		Main.context.fillStyle = "#fff";
-		Main.context.strokeStyle = "#000";
+		Main.context.strokeStyle = current ? "#f00" : "#000";
 
 		Main.context.beginPath();
 		Main.context.rect(xAcc, 10, TURN_HUD_WIDTH, 100);
@@ -155,6 +158,13 @@ class BattleState extends State {
 		Main.context.fillRect(xAcc + 10, 80, gl, 20);
 		Main.context.fillStyle = "#0F0";
 		Main.context.fillRect(xAcc + 10, 80, gc, 20);
+
+		if (!c.isAlive()) {
+			Main.context.strokeStyle = "#f00";
+			Main.context.moveTo(xAcc, 10);
+			Main.context.lineTo(xAcc + TURN_HUD_WIDTH, 110);
+			Main.context.stroke();
+		}
 	}
 
 	private function isOver() {
