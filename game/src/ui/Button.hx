@@ -9,13 +9,16 @@ class Button extends Region {
 	@:native("t")
 	private var text:String;
 
+	private var tw:Float = 0;
+
 	public function new(text:String, textSize:Float = 30) {
 		this.text = text;
 		this.textSize = textSize;
 
 		Main.context.font = '${textSize}px serif';
-		w = PAD * 2 + Main.context.measureText(text).width;
 		h = PAD * 2 + textSize;
+		tw = Main.context.measureText(text).width;
+		w = Math.max(h, PAD * 2 + tw);
 	}
 
 	override function update(s:Float) {
@@ -40,7 +43,7 @@ class Button extends Region {
 
 		Main.context.font = '${textSize}px serif';
 		Main.context.fillStyle = COLOUR;
-		Main.context.fillText(text, x + PAD, y + PAD + textSize * 0.75);
+		Main.context.fillText(text, x + (w / 2 - tw / 2), y + PAD + textSize * 0.75);
 
 		Main.context.globalAlpha = 1;
 	}

@@ -1,6 +1,9 @@
 package ui;
 
+import js.Browser;
 import js.html.MouseEvent;
+import js.html.Touch;
+import js.html.TouchEvent;
 
 class Mouse {
 	public static var X(default, null):Float = 0;
@@ -12,34 +15,88 @@ class Mouse {
 	@:native("D")
 	public static var DOWN:Bool = false;
 
+	private static var mTouch:Int = -1;
+
 	@:native("i")
 	public static function init() {
 		Main.canvas.onmousemove = onMouseMove;
-		Main.canvas.onmousedown = onMouseDown;
-		Main.canvas.onmouseup = onMouseUp;
+		Browser.window.onmousedown = onMouseDown;
+		Browser.window.onmouseup = onMouseUp;
+
+		Browser.window.ontouchstart = onTouchStart;
+		Browser.window.ontouchmove = onTouchMove;
+		Browser.window.ontouchend = onTouchEnd;
+		Browser.window.ontouchcancel = onTouchEnd;
 	}
 
 	@:native("m")
-	private static function onMouseMove(e:MouseEvent) {
-		var rect = Main.canvas.getBoundingClientRect();
-		var sx = Main.width / rect.width;
-		var sy = Main.width / rect.width;
-
-		X = (e.clientX - rect.left) * sx;
-		Y = (e.clientY - rect.top) * sy;
+	private static inline function onMouseMove(e:MouseEvent) {
+		X = (e.offsetX / Main.canvas.clientWidth) * Main.width;
+		Y = (e.offsetY / Main.canvas.clientHeight) * Main.height;
 	}
 
 	@:native("o")
 	private static inline function onMouseDown(e:MouseEvent) {
-		onMouseMove(e);
 		DOWN = true;
 	}
 
 	@:native("p")
 	private static inline function onMouseUp(e:MouseEvent) {
-		onMouseMove(e);
 		DOWN = false;
 		CLICK = true;
+	}
+
+	@:native("ots")
+	private static inline function onTouchStart(e:TouchEvent) {
+		e.preventDefault();
+
+		for (t in e.changedTouches) {
+			var x = tpx(t);
+			var y = tpy(t);
+
+			if (mTouch < 0) {
+				mTouch = t.identifier;
+				X = x;
+				Y = y;
+				DOWN = true;
+			}
+		}
+	}
+
+	@:native("otm")
+	private static inline function onTouchMove(e:TouchEvent) {
+		e.preventDefault();
+
+		for (t in e.changedTouches) {
+			var x = tpx(t);
+			var y = tpy(t);
+
+			if (mTouch == t.identifier) {
+				X = x;
+				Y = y;
+			}
+		}
+	}
+
+	private static function tpx(t:Touch):Float {
+		return ((t.clientX - Main.canvas.offsetLeft) / Main.canvas.clientWidth) * Main.width;
+	}
+
+	private static function tpy(t:Touch):Float {
+		return ((t.clientY - Main.canvas.offsetTop) / Main.canvas.clientHeight) * Main.height;
+	}
+
+	@:native("ote")
+	private static function onTouchEnd(e:TouchEvent) {
+		e.preventDefault();
+
+		for (t in e.changedTouches) {
+			if (t.identifier == mTouch) {
+				CLICK = true;
+				mTouch = -1;
+				DOWN = false;
+			}
+		}
 	}
 
 	@:native("u")

@@ -5,7 +5,7 @@ import map.MapState;
 import ui.Button;
 
 class LocationState extends State {
-	private static inline var MARGIN:Float = 32;
+	private static inline var MARGIN:Float = 42;
 
 	private var l:Location;
 	private var options:Array<Button> = [];
@@ -15,21 +15,21 @@ class LocationState extends State {
 		this.l = location;
 
 		var width = 0.0;
-		var o = new Button("Market");
+		var o = new Button("Market", 80);
 		o.onClick = function() {
 			Main.setState(new MarketState(location));
 		}
 		width = o.w;
 		options.push(o);
 
-		o = new Button("Public House");
+		o = new Button("Public House", 80);
 		o.onClick = function() {
 			Main.setState(new PubState(location));
 		}
 		width += o.w;
 		options.push(o);
 
-		o = new Button("Leave");
+		o = new Button("Leave", 80);
 		o.onClick = function() {
 			Main.setState(new MapState());
 		}
@@ -38,7 +38,7 @@ class LocationState extends State {
 
 		var xx = Main.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
 		for (o in options) {
-			o.y = Main.height * 0.75;
+			o.y = Main.height - o.h - MARGIN;
 			o.x = xx;
 			xx += o.w + MARGIN;
 		}
@@ -47,9 +47,9 @@ class LocationState extends State {
 	override function update(s:Float) {
 		super.update(s);
 
-		Main.context.font = "80px serif";
+		Main.context.font = "120px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter(l.name, Main.height / 4);
+		textCenter(l.name, 150);
 
 		for (b in options) {
 			b.update(s);

@@ -19,7 +19,7 @@ class MarketState extends State {
 		super();
 		this.l = l;
 
-		for (p in [0, .14, .28, .42, .60, .73, .90]) {
+		for (p in [0, .1, .22, .42, .6, .73, .9]) {
 			xPos.push(Main.width * p);
 		}
 
@@ -55,7 +55,7 @@ class MarketState extends State {
 
 		var yAcc = 160;
 		Main.context.font = "60px serif";
-		var h = ["Product", "Inventory", "Sell", "Price", "Market", "Buy", "Total"];
+		var h = ["Item", "Have", "Sell", "Price", "Market", "Buy", "Total"];
 		for (i in 0...h.length) {
 			Main.context.fillText(h[i], xPos[i], yAcc);
 		}

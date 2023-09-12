@@ -26,7 +26,7 @@ class MapStateMenu extends State {
 			t = Math.ceil((this.d / Map.TRAVEL_SPEED) / Map.TRAVEL_HOURS_PER_DAY);
 		}
 
-		var tr = new Button("Travel");
+		var tr = new Button("Travel", 80);
 		tr.enable(l != Map.currentLocation && r != null && Map.currentDay < Map.TOTAL_DAYS);
 		tr.onClick = () -> c({
 			location: l,
@@ -35,7 +35,7 @@ class MapStateMenu extends State {
 			distance: d
 		});
 
-		var en = new Button("Enter");
+		var en = new Button("Enter", 80);
 		en.enable(l == Map.currentLocation);
 		en.onClick = () -> c({
 			location: l,
@@ -44,7 +44,7 @@ class MapStateMenu extends State {
 			distance: d
 		});
 
-		var ex = new Button("Return");
+		var ex = new Button("Return", 80);
 		ex.onClick = () -> c({
 			location: l,
 			option: OPT_RETURN,
@@ -53,7 +53,7 @@ class MapStateMenu extends State {
 		});
 		options = [tr, en, ex];
 
-		var yacc = Main.height / 2;
+		var yacc = Main.height / 2 - 150;
 		for (b in options) {
 			b.x = Main.width / 2 - b.w / 2;
 			b.y = yacc;
@@ -64,14 +64,14 @@ class MapStateMenu extends State {
 	override function update(s:Float) {
 		super.update(s);
 
-		Main.context.font = "80px serif";
+		Main.context.font = "120px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter(l.name, Main.height / 4);
+		textCenter(l.name, 150);
 
 		if (d > 0) {
-			Main.context.font = "40px serif";
-			textCenter('Distance: $d miles', Main.height / 4 + 100);
-			textCenter('Travel Time: $t days', Main.height / 4 + 150);
+			Main.context.font = "50px serif";
+			textCenter('Distance: $d miles', 250);
+			textCenter('Travel Time: $t days', 300);
 		}
 
 		for (b in options) {

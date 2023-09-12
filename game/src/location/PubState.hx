@@ -5,7 +5,7 @@ import map.Map;
 import ui.Button;
 
 class PubState extends State {
-	private static inline var MARGIN:Float = 32;
+	private static inline var MARGIN:Float = 42;
 	private static inline var INFO_COST:Int = 5;
 
 	private var l:Location;
@@ -17,7 +17,7 @@ class PubState extends State {
 		this.l = l;
 
 		var width = 0.0;
-		var i = new Button('Information (-$INFO_COST)');
+		var i = new Button('Information (-$INFO_COST)', 80);
 		i.onClick = function() {
 			info = Map.revealNeighbors();
 			if (info.length == 0) {
@@ -31,14 +31,14 @@ class PubState extends State {
 		width = i.w;
 		options.push(i);
 
-		var g = new Button("Hire Guard");
+		var g = new Button("Hire Guard", 80);
 		g.onClick = function() {
 			Main.setState(new GuardState(l));
 		}
 		width += g.w;
 		options.push(g);
 
-		var o = new Button("Leave");
+		var o = new Button("Leave", 80);
 		o.onClick = function() {
 			Main.setState(new LocationState(l));
 		}
@@ -47,7 +47,7 @@ class PubState extends State {
 
 		var xx = Main.width / 2 - (width + (options.length - 1) * MARGIN) / 2;
 		for (o in options) {
-			o.y = Main.height * 0.75;
+			o.y = Main.height - o.h - MARGIN;
 			o.x = xx;
 			xx += o.w + MARGIN;
 		}
@@ -56,12 +56,12 @@ class PubState extends State {
 	override function update(s:Float) {
 		super.update(s);
 
-		Main.context.font = "80px serif";
+		Main.context.font = "120px serif";
 		Main.context.fillStyle = "#fff";
-		textCenter('${l.name} Public House', Main.height / 4);
+		textCenter('${l.name} Public House', 150);
 
 		Main.context.font = "40px serif";
-		var yy = Main.height / 4 + 100;
+		var yy = 250;
 		for (i in info) {
 			textCenter(i, yy);
 			yy += 50;

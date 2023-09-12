@@ -2,6 +2,7 @@ package map;
 
 import Types.Location;
 import battle.BattleState;
+import js.Browser;
 import location.LocationState;
 import map.Map;
 import map.MapStateMenu.MapMenuResult;
@@ -35,6 +36,8 @@ class MapState extends State {
 	@:native("rb")
 	private var reportButton:Button;
 
+	private var fullscreenButton = new Button("⇱", 160);
+
 	public function new() {
 		super();
 		bg = "#00F";
@@ -46,6 +49,10 @@ class MapState extends State {
 		reportButton.x = Main.width / 2 - reportButton.w / 2;
 		reportButton.y = Main.height * 0.8 - reportButton.h / 2;
 		reportButton.onClick = () -> Main.setState(new EndState());
+
+		fullscreenButton.onClick = () -> Browser.document.body.requestFullscreen();
+		fullscreenButton.x = 20;
+		fullscreenButton.y = Main.height - fullscreenButton.h - 20;
 	}
 
 	override function update(s:Float) {
@@ -157,13 +164,15 @@ class MapState extends State {
 			reportButton.update(s);
 		}
 
+		if (menu != null) {
+			menu.update(s);
+		}
+
 		if (selectedLocation != null) {
 			menu = new MapStateMenu(selectedLocation, onLocationMenuChoice);
 		}
 
-		if (menu != null) {
-			menu.update(s);
-		}
+		fullscreenButton.update(s);
 	}
 
 	private inline function canInteract():Bool {

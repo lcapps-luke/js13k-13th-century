@@ -40,7 +40,7 @@ class PlayerCharacter extends Character {
 		}
 
 		// TODO controls
-		if (!aiming && !Mouse.DOWN) {
+		if (!aiming) {
 			mx = Mouse.X;
 			my = Mouse.Y;
 		}

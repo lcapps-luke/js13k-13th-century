@@ -27,7 +27,7 @@ class GuardState extends State {
 				continue;
 			}
 
-			var btn = new Button('Hire (-${i.cost})');
+			var btn = new Button('Hire (-${i.cost})', 80);
 			btn.enable(i.cost <= Inventory.pence);
 			btn.onClick = function() {
 				Inventory.guard = i;
@@ -83,24 +83,28 @@ class GuardState extends State {
 		Main.context.font = "80px serif";
 		textCenter("Hire Guard", 80);
 
-		Main.context.font = "30px serif";
-		textCenter("You can have only one guard at a time. Hiring another will replace an existing guard", 120);
+		if (Inventory.guard != null) {
+			Main.context.font = "40px serif";
+			textCenter("You can have only one guard at a time. Hiring another will replace your existing guard.", 130);
+		}
 
 		var yAcc = 200;
 		for (g in opt) {
 			// image
-			var ix = Main.width * .3 + 30;
+			var ix = 180;
 			Main.context.drawImage(g.guard.sprite, ix, yAcc);
 			g.guard.weapon.draw(ix - Character.SPRITE_OFFSET_X, yAcc - Character.SPRITE_OFFSET_Y);
 
+			Main.context.font = '60px serif';
+
 			// name
-			Main.context.fillText(g.guard.name, Main.width * .3, yAcc + 100);
+			Main.context.fillText(g.guard.name, ix - 50, yAcc + 100);
 
 			// stats
-			Main.context.fillText('Health: ${g.guard.stats.health}', Main.width * .5, yAcc + 20);
-			Main.context.fillText('Guard: ${g.guard.stats.guard}', Main.width * .5, yAcc + 50);
-			Main.context.fillText('Speed: ${g.guard.stats.speed}', Main.width * .5, yAcc + 80);
-			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.width * .5, yAcc + 110);
+			Main.context.fillText('Health: ${g.guard.stats.health}', Main.width * .3, yAcc + 40);
+			Main.context.fillText('Guard: ${g.guard.stats.guard}', Main.width * .3, yAcc + 100);
+			Main.context.fillText('Speed: ${g.guard.stats.speed}', Main.width * .5, yAcc + 40);
+			Main.context.fillText('Attack: ${g.guard.stats.attack}', Main.width * .5, yAcc + 100);
 
 			// hire button
 			if (g.hire == null) {
