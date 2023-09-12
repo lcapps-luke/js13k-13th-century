@@ -27,7 +27,7 @@ class Images {
 	private static var callback:Void->Void;
 
 	@:native("hc")
-	private static var manHairColours = ["6e5631", "85773b", "91916", "a08330"];
+	private static var manHairColours = ["6e5631", "85773b", "91916f", "a08330"];
 	@:native("tc")
 	private static var tunicColours = ["9d835a", "9e533e", "629d5a", "5a7b9d"];
 	@:native("lc")
